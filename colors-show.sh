@@ -1,0 +1,11 @@
+#!/bin/bash
+echo '[[30m30m black[30m]'
+echo '[[31m31m red[30m]'
+echo '[[32m32m green[30m]'
+echo '[[33m33m yellow-ish[30m]'
+echo '[[34m34m blue[30m]'
+echo '[[35m35m magenta[30m]'
+echo '[[36m36m cyan[30m]'
+echo '[[37m37m light-grey[30m]'
+echo '[[38m38m ?black?[30m]'
+echo '[[39m39m ?black?[30m]'
