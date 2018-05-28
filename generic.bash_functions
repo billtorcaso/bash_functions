@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Bill Torcaso's own bash settings
+# Bill Torcaso's generic bash settings
 #
 # This script is (supposed to be) idempotent
 #
@@ -23,6 +23,28 @@ function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n$ '; }
 #   This is my favorite for local use: The delineator is white text on a teal background
 function setPS1()  {
     PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n$ '
+}
+
+#----------------------------------------------------------
+
+# Services for my Github repository holding these Bash function definition files.
+# Conditional on having a value in "$_BT_BASH_REPO"
+
+[[ -n "$_BT_BASH_REPO" ]] && \
+{
+    function fnsrepo()   { cd "$_BT_BASH_REPO/$1"; }
+    function fnsstatus() { ( fnsrepo && git status "$@"; ) }
+    function fnsdiff()   { ( fnsrepo && git diff "$@"; ) }
+    function fnscommit() { 
+      ( fnsrepo && \
+        git add . && \
+        git commit -m "${1:-Work in progress.}" && \
+        git push; 
+      )
+    }
+    export _BT_BASH_FUNCTIONS="$_BT_BASH_REPO/generic.bash_functions"
+    function fned()      { vi "${_BT_BASH_FUNCTIONS}" ; fns; }
+    function fns()       { source "${_BT_BASH_FUNCTIONS}"; }
 }
 
 #----------------------------------------------------------
@@ -232,9 +254,9 @@ function vagtunnel()   { ( tmp; set -x; ssh -L ${1:-8000}:localhost:${1:-8000} v
 
 # Navigation within my $HOME directory tree
 
-function bin()      { cd $HOME/bin/$1 && pwd; }
+[[ -d "$HOME/bin" ]] && function bin()      { cd $HOME/bin/$1 && pwd; }
+[[ -d "$HOME/tmp" ]] && function tmp()      { cd $HOME/tmp/$1 && pwd; }
 function _ssh()     { cd $HOME/.ssh/$1; }
-function tmp()      { cd $HOME/tmp/$1 && pwd; }
 
 #----------------------------------------------------------
 
