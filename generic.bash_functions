@@ -43,7 +43,7 @@ function setPS1()  {
       )
     }
     export _BT_BASH_FUNCTIONS="$_BT_BASH_REPO/generic.bash_functions"
-    function fned()      { vi "${_BT_BASH_FUNCTIONS}" ; fns; }
+    function fned()      { vi "$@" "${_BT_BASH_FUNCTIONS}" ; fns; }
     function fns()       { source "${_BT_BASH_FUNCTIONS}"; }
 }
 
@@ -144,6 +144,7 @@ function gsb()      { git status -s -b "$@"; }
 
 function ginfo()    { git remote -v && git branch -l "$@" && git status ; }
 function gin()      { gsb "$@"; }  # On some systems, make 'gin' the same as 'ginfo'.
+function ginc()     { cls; gin "$@"; }
 function gina()     { ginfo -a "$@"; }
 function gd()       { git diff "$@"; }
 function gdc()      { gd --cached "$@"; }
