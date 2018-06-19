@@ -24,6 +24,9 @@ function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n$ '; }
 function setPS1()  {
     PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n$ '
 }
+#   This is for use with a virtual environment.  It makes the delineator cover the 
+#   whole top line
+function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 #----------------------------------------------------------
 
@@ -144,6 +147,7 @@ function gsb()      { git status -s -b "$@"; }
 
 function ginfo()    { git remote -v && git branch -l "$@" && git status ; }
 function gin()      { gsb "$@"; }  # On some systems, make 'gin' the same as 'ginfo'.
+function ginc()     { clear; gin "$@"; }
 function gina()     { ginfo -a "$@"; }
 function gd()       { git diff "$@"; }
 function gdc()      { gd --cached "$@"; }
