@@ -147,7 +147,7 @@ function gsb()      { git status -s -b "$@"; }
 
 function ginfo()    { git remote -v && git branch -l "$@" && git status ; }
 function gin()      { gsb "$@"; }  # On some systems, make 'gin' the same as 'ginfo'.
-function ginc()     { clear; gin "$@"; }
+function ginc()     { cls; gin "$@"; }
 function gina()     { ginfo -a "$@"; }
 function gd()       { git diff "$@"; }
 function gdc()      { gd --cached "$@"; }
@@ -188,6 +188,7 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function mm()       { pymanc makemigrations && pyman migrate; }
+function mmrun()    { mm && runserve "$@"; }
 function shp()      { pyman shell_plus "$@"; }
 
 #--------------------------------------
