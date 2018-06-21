@@ -155,7 +155,7 @@ function gco()      { git checkout "$@"; }
 function glog()     { git log --name-only "$@"; }
 function gmod()     { git status -s -b | awk '$1 == "M" || $1 == "MM" || $1 == "??" { print $2; }'; }
 
-function gpo()      { ( set -x; git push origin "${@:-$(gbron)}" ) }
+function gpo()      { ( local target="${@:-$(gbron)}"; set -x; git push origin "$target" ) }
 
 gbr_obliterate () {
     # How to completely annihilate a branch, locally and in the repo.
