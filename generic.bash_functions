@@ -188,7 +188,7 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function mm()       { pymanc makemigrations && pyman migrate; }
-function mmrun()    { mm && runserve "$@"; }
+function mmr()      { mm && runserve "$@"; }
 function shp()      { pyman shell_plus "$@"; }
 
 #--------------------------------------
