@@ -24,6 +24,9 @@ function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n$ '; }
 function setPS1()  {
     PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n$ '
 }
+#   This is for use with a virtual environment.  It makes the delineator cover the 
+#   whole top line
+function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 #----------------------------------------------------------
 
@@ -152,7 +155,7 @@ function gco()      { git checkout "$@"; }
 function glog()     { git log --name-only "$@"; }
 function gmod()     { git status -s -b | awk '$1 == "M" || $1 == "MM" || $1 == "??" { print $2; }'; }
 
-function gpo()      { ( set -x; git push origin "${@:-$(gbron)}" ) }
+function gpo()      { ( local target="${@:-$(gbron)}"; set -x; git push origin "$target" ) }
 
 gbr_obliterate () {
     # How to completely annihilate a branch, locally and in the repo.
@@ -185,7 +188,7 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function mm()       { pymanc makemigrations && pyman migrate; }
-function mmrun()    { mm && runserve "$@"; }
+function mmr()      { mm && runserve "$@"; }
 function shp()      { pyman shell_plus "$@"; }
 
 #--------------------------------------
