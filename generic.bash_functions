@@ -8,10 +8,12 @@
 #----------------------------------------------------------
 
 # I use colored prompts to indicate the type of machine this is.
-#   magenta   ==  production server
 #   green     ==  development server
-#   red       ==  ???
+#   magenta   ==  production server, and host of a Docker container
+#   red       ==  production code running within a Docker container
+#   blue      ==  ???
 #   cyan      ==  ???
+#   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
 function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n$ \[\e[30m\]'; }
@@ -174,6 +176,7 @@ function gtop()     { cd $(git rev-parse --show-cdup)/${1:-.} && pwd; }
 # For a Wagtail-based Django project (only)
 
 function visett()   { vi */settings/[a-z]*.py; }
+function vimod()    { vi ${1:-*}/models.py; }
 
 #----------------------------------------------------------
 
