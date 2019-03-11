@@ -16,15 +16,16 @@
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n$ \[\e[30m\]'; }
-function green_prompt()     { PS1="${1}"'\[\e[32m\][ $? ][\u][\h]\n[\w]\n$ \[\e[30m\]'; }
-function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n$ \[\e[30m\]'; }
-function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n$ \[\e[30m\]'; }
-function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n$ '; }
+###function magenta_prompt()   { PS1='\[\e[35m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function green_prompt()     { PS1="${1}"'\[\e[32m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
 
 #   This is my favorite for local use: The delineator is white text on a teal background
 function setPS1()  {
-    PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n$ '
+    PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n'
 }
 #   This is for use with a virtual environment.  It makes the delineator cover the 
 #   whole top line
@@ -70,6 +71,7 @@ function deact()    { deactivate; } # just laziness
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
 function fndeF()    { declare -F $@; }
+function fndeFg()   { declare -F | grep $@; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
 function ls1()      { ls -1 "$@"; }
