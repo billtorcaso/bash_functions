@@ -16,7 +16,7 @@
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-###function magenta_prompt()   { PS1='\[\e[35m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function bt_prompt()   { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function green_prompt()     { PS1="${1}"'\[\e[32m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
@@ -74,6 +74,7 @@ function fndeF()    { declare -F $@; }
 function fndeFg()   { declare -F | grep $@; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
+function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
 function md5r()     { md5 -r $@ | sort; }
@@ -107,7 +108,7 @@ function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _grep
 function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _grep_excludes | sort; }
 
 #   find all, regardless of type
-function fall()     { find "${@}" | sort; }
+function fall()     { find "${@:-.}" | sort; }
 
 #   find python files
 function ffpy()     { ff "$@" | grep "[.]py$" ; }
@@ -140,8 +141,9 @@ function findeg()   { time find . -type f -exec grep "$@" "{}" /dev/null ';' ; }
 #----------------------------------------------------------
 
 # Git stuff
+# (also pip stuff, because where else?)
 
-# 'gin', 'gco', 'glog', and 'gpo' get 90% os the use.
+# 'gin', 'gco', 'glog', and 'gpo' get 90% of the use.
 
 function gadd ()    { ( pyclean; git add ${@:-$(gmod)} ) }
 function gbron()    { ginfo | awk '$1 == "*" { print $2; }'; }
@@ -168,6 +170,12 @@ gbr_obliterate () {
     echo "git push origin --delete '$1' && git branch -d '$1'"
 }
 
+#   This is pip as used with my standard "*_HERE" structure
+
+function pip_log()  { 
+    pip "$@" 2>&1 | tee ~/tmp/logs/$(basename $PWD)-$1-log.txt; 
+}
+
 #   These don't get much use - may delete them sometime.
 
 function gmod_OLD() { ginfo | awk '$0 ~ /^\t/ && $1 == "modified:" { print $2; }'; }
@@ -184,7 +192,7 @@ function vimod()    { vi ${1:-*}/models.py; }
 
 # Django stuff
 
-function pyman()    { ( set -x; python3.6 ./manage.py "$@"; ) }
+function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
 function runserver(){ pyman runserver "$@"; }
 function runserve() { 
@@ -192,9 +200,9 @@ function runserve() {
           --settings="$(basename $(pwd)).settings.${1:-dev}" \
           "0.0.0.0:${2:-8000}" ; 
 }
-function mm()       { pymanc makemigrations && pyman migrate; }
-function mmr()      { mm && runserve "$@"; }
-function shp()      { pyman shell_plus "$@"; }
+function mmm()      { pymanc makemigrations && pyman migrate; }
+function mmmr()     { mmm && runserve "$@"; }
+function shp()      { pyman shell_plus --ipython "$@"; }
 
 #--------------------------------------
 
@@ -202,11 +210,11 @@ function shp()      { pyman shell_plus "$@"; }
 
 function awsssh()    { 
     # $1 == the target machine
-    # $2 == the name of a key-pair file in ~/.ssh
-    # $3 == the login user on $1.  Default is "ec2-user", probably not right.
+    # $2 == the name of a key-pair file in ${KEYPAIR_FILES_HERE:-$HOME/.ssh}
+    # $3 == the login user on $1.  Default is "ubuntu".
     # SSH_VERBOSE == env. variable intended to carry "-v", or nothing
 
-    (   tmp     # always execute from a known and harmless directory
+    (   tmp;    # always execute from a known and harmless directory
 
         # Check the args.
         [[ -n "$1" ]] && THIS_HOST="$1" || \
@@ -216,12 +224,12 @@ function awsssh()    {
             { echo "Need a private key file name in \$2"; exit 1; }
 
         [[ -n "$3" ]] && THIS_USER="$3" || \
-            THIS_USER="ec2-user"  # default username
+            THIS_USER="ubuntu"  # default username
 
         # Do it.
         set -x;
         ssh ${SSH_VERBOSE} \
-            -i ~/.ssh/${THIS_KEYPAIR} ${THIS_USER}@${THIS_HOST}
+            -i ${KEYPAIR_FILES_HERE:-$HOME/.ssh}/${THIS_KEYPAIR} ${THIS_USER}@${THIS_HOST}
     )
 }
 
@@ -248,7 +256,7 @@ function awsscp()    {
 #   The pull operations are "person, servername, thing, destination"
 #   The push operations are "thing, person, servername, destination"
 
-function scppull()  { (set -x;  scp  -o PubkeyAuthentication=no "${1}@${2}:${3}" "${4:-.}"; ) }
+function scppull()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}@${2}:${3}" "${4:-.}"; ) }
 function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3}:${4:-.}"; ) }
 
 #----------------------------------------------------------
