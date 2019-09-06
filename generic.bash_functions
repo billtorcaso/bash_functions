@@ -229,7 +229,8 @@ function awsssh()    {
         # Do it.
         set -x;
         ssh ${SSH_VERBOSE} \
-            -i ${KEYPAIR_FILES_HERE:-$HOME/.ssh}/${THIS_KEYPAIR} ${THIS_USER}@${THIS_HOST}
+            -i ${KEYPAIR_FILES_HERE:-$HOME/.ssh}/${THIS_KEYPAIR} \
+            ${THIS_USER}@${THIS_HOST};
     )
 }
 
