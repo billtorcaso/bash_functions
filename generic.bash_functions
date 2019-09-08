@@ -5,6 +5,17 @@
 # This script is (supposed to be) idempotent
 #
 
+#----------------------------
+
+# Extended function-definition-service functions
+# "_FNDEF_ALL_FILES" must be previously set in a host-specific setup file
+
+[[ -n "$_FNDEF_ALL_FILES" ]] && \
+    {
+        function fned() { ( set -x; vi $_FNDEF_ALL_FILES; ); fns; }
+        function fns()  { for i in $_FNDEF_ALL_FILES; do source $i; done; }
+    }
+
 #----------------------------------------------------------
 
 # I use colored prompts to indicate the type of machine this is.
@@ -33,38 +44,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 #----------------------------------------------------------
 
-# Services for my Github repository holding these Bash function definition files.
-# Conditional on having a value in "$_BT_BASH_REPO"
-
-[[ -n "$_BT_BASH_REPO" ]] && \
-{
-    function fnsrepo()   { cd "$_BT_BASH_REPO/$1"; }
-    function fnsstatus() { ( fnsrepo && git status "$@"; ) }
-    function fnsdiff()   { ( fnsrepo && git diff "$@"; ) }
-    function fnscommit() { 
-      ( fnsrepo && \
-        git add . && \
-        git commit -m "${1:-Work in progress.}" && \
-        git push; 
-      )
-    }
-    export _BT_BASH_FUNCTIONS="$_BT_BASH_REPO/generic.bash_functions"
-    ###function fned()      { vi "$@" "${_BT_BASH_FUNCTIONS}" ; fns; }
-    ###function fns()       { source "${_BT_BASH_FUNCTIONS}"; }
-}
-
-#----------------------------------------------------------
-
-#   This for use inside an Elastic Beanstalk ssh session or other Docker session. 
-#   It is not useful anywhere else.
-
-function docker_bash() { 
-    sudo docker exec -it $(sudo docker ps | awk 'NR==2{print $1;}') bash; 
-}
-
-#----------------------------------------------------------
-
-# General Bash services
+# General Bash services, defined as bash functions
 
 function cls()      { clear; }
 function deact()    { deactivate; } # just laziness
@@ -273,9 +253,9 @@ function vagtunnel()   { ( tmp; set -x; ssh -L ${1:-8000}:localhost:${1:-8000} v
 
 # Navigation within my $HOME directory tree
 
-[[ -d "$HOME/bin" ]] && function bin()      { cd $HOME/bin/$1 && pwd; }
-[[ -d "$HOME/tmp" ]] && function tmp()      { cd $HOME/tmp/$1 && pwd; }
-function _ssh()     { cd $HOME/.ssh/$1; }
+[[ -d "$HOME/bin"  ]] && function bin() { cd $HOME/bin/$1 && pwd; }
+[[ -d "$HOME/tmp"  ]] && function tmp() { cd $HOME/tmp/$1 && pwd; }
+[[ -d "$HOME/.ssh" ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
 
 #----------------------------------------------------------
 
