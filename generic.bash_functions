@@ -72,7 +72,7 @@ function wcl()      { wc -l "$@"; }
 
 #----------------------------------------------------------
 
-# Services that use 'find | grep'
+# Services that use 'find' and 'find | grep'
 
 #   These functions traverse the directory tree, 
 #   to find regular files, or directories, or everything, 
@@ -90,6 +90,11 @@ function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _grep
 #   find all, regardless of type
 function fall()     { find "${@:-.}" | sort; }
 
+#   grep for certain targets, within a list of regular files or directories
+function ffeg()     { ff | grep "$@"; }
+function fdeg()     { fd | grep "$@"; }
+
+
 #   find python files
 function ffpy()     { ff "$@" | grep "[.]py$" ; }
 #   These three are lazyness - apply 'vi' to selected files
@@ -100,10 +105,6 @@ function vipy()     { vi $(ffpy); }
 #----------------------------------------------------------
 
 # Services that use 'grep | find' 
-
-#   grep for certain targets, within a list of regular files or directories
-function ffeg()     { ff | grep "$@"; }
-function fdeg()     { fd | grep "$@"; }
 
 #   'grep' within regular files, without excluding any files by name
 #   Usually it is more useful to exclude the git repo files and some others.
@@ -121,7 +122,6 @@ function findeg()   { time find . -type f -exec grep "$@" "{}" /dev/null ';' ; }
 #----------------------------------------------------------
 
 # Git stuff
-# (also pip stuff, because where else?)
 
 # 'gin', 'gco', 'glog', and 'gpo' get 90% of the use.
 
@@ -148,12 +148,6 @@ gbr_obliterate () {
     [[ -n "$1" ]] || { echo "Need something in \$1. Try again."; return 1; }
     echo "... If you really mean it, do this:"
     echo "git push origin --delete '$1' && git branch -d '$1'"
-}
-
-#   This is pip as used with my standard "*_HERE" structure
-
-function pip_log()  { 
-    pip "$@" 2>&1 | tee ~/tmp/logs/$(basename $PWD)-$1-log.txt; 
 }
 
 #   These don't get much use - may delete them sometime.
