@@ -58,7 +58,7 @@ function heg()      { history | grep $@; }
 function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
-function md5r()     { md5 -r $@ | sort; }
+### This is not generic :-(   function md5r()     { md5 -r $@ | sort; }
 function scriptlog(){ script ${1:-$HOME/tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
 function scrls()    { screen -ls "$@"; }
 function scrr()     { screen -r "$@"; }
@@ -139,7 +139,7 @@ function gina()     { ginfo -a "$@"; }
 function gd()       { git diff "$@"; }
 function gdc()      { gd --cached "$@"; }
 function gco()      { git checkout "$@"; }
-function glog()     { git log --name-only "$@"; }
+function glog()     { git log --name-only "$@" | head -n 20; }
 function gmod()     { git status -s -b | awk '$1 == "M" || $1 == "MM" || $1 == "??" { print $2; }'; }
 
 function gpo()      { ( local target="${@:-$(gbron)}"; set -x; git push origin "$target" ) }
