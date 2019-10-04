@@ -8,12 +8,13 @@
 #----------------------------
 
 # Extended function-definition-service functions
-# "_FNDEF_ALL_FILES" must be previously set in a host-specific setup file
+# "_BT_BASH_FNED_FILES" must be previously set in a host-specific setup file
 
-[[ -n "$_FNDEF_ALL_FILES" ]] && \
+[[ -n "$_BT_BASH_FNED_FILES" ]] && \
     {
-        function fned() { ( set -x; vi $_FNDEF_ALL_FILES; ); fns; }
-        function fns()  { for i in $_FNDEF_ALL_FILES; do source $i; done; }
+        function fned() { ( set -x; vi $_BT_BASH_FNED_FILES; ); fns; }
+        function fns()  { for i in $_BT_BASH_FNED_FILES; do source $i; done; }
+        function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     }
 
 #----------------------------------------------------------
