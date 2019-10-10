@@ -10,7 +10,7 @@
 # Extended function-definition-service functions
 # "_BT_BASH_FNED_FILES" must be previously set in a host-specific setup file
 
-[[ -n "$_BT_BASH_FNED_FILES" ]] && \
+[[ -n "$_BT_BASH_REPO" ]] && \
     {
         function fned() { ( set -x; vi $_BT_BASH_FNED_FILES; ); fns; }
         function fns()  { for i in $_BT_BASH_FNED_FILES; do source $i; done; }
