@@ -33,6 +33,7 @@ function heg()      { history | grep $@; }
 function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
+function nsl()      { nslookup "$@"; }
 ### This is not generic :-(   function md5r()     { md5 -r $@ | sort; }
 function scriptlog(){ script ${1:-$HOME/tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
 function scrls()    { screen -ls "$@"; }
