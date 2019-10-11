@@ -3,46 +3,21 @@
 # Bill Torcaso's generic bash settings
 #
 # This script is (supposed to be) idempotent
-#
+# And is supposed to be fully generic,
+# with no system-specific defintions.
 
-#----------------------------
-
-# Extended function-definition-service functions
-# "_BT_BASH_FNED_FILES" must be previously set in a host-specific setup file
-
-[[ -n "$_BT_BASH_REPO" ]] && \
-    {
-        function fned() { ( set -x; vi $_BT_BASH_FNED_FILES; ); fns; }
-        function fns()  { for i in $_BT_BASH_FNED_FILES; do source $i; done; }
-        function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
-    }
-
-#----------------------------------------------------------
-
-# I use colored prompts to indicate the type of machine this is.
-#   green     ==  development server
-#   magenta   ==  production server, and host of a Docker container
-#   red       ==  production code running within a Docker container
-#   blue      ==  ???
-#   cyan      ==  ???
-#   yellow    ==  Too hard on my eyes
-#   black     ==  restore the default color (black)
-
-function bt_prompt()   { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function green_prompt()     { PS1="${1}"'\[\e[32m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
-
-#   This is my favorite for local use: The delineator is white text on a teal background
-function setPS1()  {
-    PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n'
-}
-#   This is for use with a virtual environment.  It makes the delineator cover the 
-#   whole top line
-function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
-
+####----------------------------
+###
+#### Extended function-definition-service functions
+#### "_BT_BASH_FNED_FILES" must be previously set in a host-specific setup file
+###
+###[[ -n "$_BT_BASH_REPO" ]] && \
+###    {
+###        function fned() { ( set -x; vi $_BT_BASH_FNED_FILES; ); fns; }
+###        function fns()  { for i in $_BT_BASH_FNED_FILES; do source $i; done; }
+###        function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+###    }
+###
 #----------------------------------------------------------
 
 # General Bash services, defined as bash functions
