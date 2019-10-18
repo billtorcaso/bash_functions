@@ -213,15 +213,6 @@ function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3
 
 #----------------------------------------------------------
 
-#   General HTTP tunnelling functions
-
-function tunnel()      { ( tmp; set -x; ssh -L ${1}:localhost:${2} ${3}; ) }
-
-#   this is for tunnelling to a local Vagrant VM
-function vagtunnel()   { ( tmp; set -x; ssh -L ${1:-8000}:localhost:${1:-8000} vagrant@192.168.33.${2:-10}; ) }
-
-#----------------------------------------------------------
-
 # Navigation within my $HOME directory tree
 
 [[ -d "$HOME/bin"  ]] && function bin() { cd $HOME/bin/$1 && pwd; }
@@ -232,10 +223,11 @@ function vagtunnel()   { ( tmp; set -x; ssh -L ${1:-8000}:localhost:${1:-8000} v
 
 # Vagrant commands
 
-function vag()      { vagrant $@; }
-function vagst()    { vag global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
-function vssh()     { ( set -x; vagrant ssh "$@"; ) }
-function upshell()  { vag up && vssh "$@"; }
+function vgr()      { vagrant $@; }
+function vag()      { echo "Use 'vgr', not 'vag'!"; vgr $@; }
+function vgrst()    { vgr global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
+function vssh()     { ( set -x; vgr ssh "$@"; ) }
+function upshell()  { vgr up && vssh "$@"; }
 
 #----------------------------------------------------------
 
