@@ -9,7 +9,7 @@
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-function bt_prompt()   { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function green_prompt()     { PS1="${1}"'\[\e[32m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
 function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }

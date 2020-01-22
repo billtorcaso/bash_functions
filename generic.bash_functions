@@ -6,20 +6,33 @@
 # And is supposed to be fully generic,
 # with no system-specific defintions.
 
-####----------------------------
-###
-#### Extended function-definition-service functions
-#### "_BT_BASH_FNED_FILES" must be previously set in a host-specific setup file
-###
-###[[ -n "$_BT_BASH_REPO" ]] && \
-###    {
-###        function fned() { ( set -x; vi $_BT_BASH_FNED_FILES; ); fns; }
-###        function fns()  { for i in $_BT_BASH_FNED_FILES; do source $i; done; }
-###        function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
-###    }
-###
 #----------------------------------------------------------
+# I use colored prompts to indicate the type of machine this is.
+#   green     ==  development server
+#   magenta   ==  production server, and/or host of a Docker container
+#   red       ==  production code running within a Docker container
+#   blue      ==  ???
+#   cyan      ==  ???
+#   yellow    ==  Too hard on my eyes
+#   black     ==  restore the default color (black)
 
+###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function green_pipenv()     { PS1='\[\e[32m\]'"[pipenv:$(basename $PWD)]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
+
+#   This is my favorite for local use: The foreground of the prompt is white text on a teal background
+function setPS1()  {
+    PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n'
+}
+#   This is for use with a virtual environment.  It makes the delineator cover the 
+#   whole top line
+function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
+
+#----------------------------------------------------------
 # General Bash services, defined as bash functions
 
 function cls()      { clear; }
@@ -34,10 +47,10 @@ function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
 function nsl()      { nslookup "$@"; }
-### This is not generic :-(   function md5r()     { md5 -r $@ | sort; }
 function scriptlog(){ script ${1:-$HOME/tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
 function scrls()    { screen -ls "$@"; }
 function scrr()     { screen -r "$@"; }
+function sql3()     { sqlite3 "$@"; }
 function sudoo()    { ( set -x; /usr/bin/sudo -H -E "$@"; ) }
 function pyclean () {
     # remove all pyc files that are compiled or cached
@@ -58,8 +71,11 @@ function wcl()      { wc -l "$@"; }
 #   exclude bothersome files from the list of files coming in on stdin
 function _grep_excludes() { grep -v -e /.sass-cache/ -e ^Binary -e '/venv_' -e /[.]git/ ; }
 
+function _drop_first_two_chars()    { sed 's/^..//' $@; }
+
 #   find regular files
 function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _grep_excludes | sort; }
+function ffs3path() { ff "$@" | _drop_first_two_chars; }
 
 #   find directories
 function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _grep_excludes | sort; }
@@ -215,9 +231,11 @@ function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3
 
 # Navigation within my $HOME directory tree
 
-[[ -d "$HOME/bin"  ]] && function bin() { cd $HOME/bin/$1 && pwd; }
-[[ -d "$HOME/tmp"  ]] && function tmp() { cd $HOME/tmp/$1 && pwd; }
-[[ -d "$HOME/.ssh" ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
+[[ -d "$HOME/bin"       ]] && function bin() { cd $HOME/bin/$1 && pwd; }
+[[ -d "$HOME/tmp"       ]] && function tmp() { cd $HOME/tmp/$1 && pwd; }
+[[ -d "$HOME/Desktop"   ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
+[[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
+[[ -d "$HOME/.ssh"      ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
 
 #----------------------------------------------------------
 
