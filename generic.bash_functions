@@ -37,9 +37,11 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 function cls()      { clear; }
 function deact()    { deactivate; } # just laziness
+function dfh()      { df -h "${@:-.}"; }
+function dush()     { du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
-function fndeF()    { declare -F $@; }
+### This is not very useful:    function fndeF()    { declare -F $@; }
 function fndeFg()   { declare -F | grep $@; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
