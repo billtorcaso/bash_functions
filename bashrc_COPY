@@ -1,0 +1,28 @@
+
+export _BT_GIT_REPOS_HERE="$HOME/github-software-here"
+export _BT_BASH_REPO="$_BT_GIT_REPOS_HERE/bash_functions"
+export _BT_BASH_FNED_FILES="$_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/bt.bash_functions"
+export _BT_BASHRC_FILES="$HOME/.bashrc $HOME/.bash_profile"
+export _BT_BASH_ALL_RC_FILES="$_BT_BASHRC_FILES $_BT_BASH_FNED_FILES"
+
+function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+function fndef()    { declare -f "$@"; }
+function fns()      {
+    for thing in $(echo $_BT_BASH_FNED_FILES)
+    do
+        echo 1>&2 "Checking for '$thing'";
+        [[ -r $thing ]] && source $thing
+        declare -f pipenv_prompt
+    done
+}
+function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
+function fned_all() { vi $_BT_BASH_ALL_RC_FILES ; }
+
+###case "$PIPENV_ACTIVE" in
+###    1) pipenv_prompt;;
+###    *) setPS1;;
+###esac
+
+fns;    #  Set all my Bash functions
+
+true
