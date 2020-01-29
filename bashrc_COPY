@@ -10,9 +10,7 @@ function fndef()    { declare -f "$@"; }
 function fns()      {
     for thing in $(echo $_BT_BASH_FNED_FILES)
     do
-        echo 1>&2 "Checking for '$thing'";
         [[ -r $thing ]] && source $thing
-        declare -f pipenv_prompt
     done
 }
 function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
