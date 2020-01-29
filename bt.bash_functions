@@ -78,11 +78,19 @@ function bto_go()   { bto $1 && bto_act; }
 #
 #       ssh -i "billtorcasoorg.pem" ec2-user@ec2-3-14-194-51.us-east-2.compute.amazonaws.com
 #
+#--- "billtorcasoorg.pem" is (supposed to be) used on all AWS EC2 servers.
 export _BTO_AWS_PEM="billtorcasoorg.pem"
-export _BTO_AWS_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
-export _BTO_AWS_USER="billtorcaso"
-function aws_bto() { awsssh $_BTO_AWS_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_USER}; }
-function awsscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_HOST $_BTO_AWS_PEM $_BTO_AWS_USER; }
+#--- Settings for my AWS_LINUX2 host machine
+export _BTO_AWS_LINUX2_USER="billtorcaso"
+export _BTO_AWS_LINUX2_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
+function aws_bto() { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_USER}; }
+function awsscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_USER; }
+
+#--- Settings for my AWS UBUNTU host machine
+export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
+export _BTO_AWS_UBUNTU_HOST="ec2-3-16-94-59.us-east-2.compute.amazonaws.com"
+function ubuntu_bto() { awsssh $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_USER}; }
+function ubuntuscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_USER; }
 
 #----------------------------
 
