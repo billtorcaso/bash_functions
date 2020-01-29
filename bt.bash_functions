@@ -90,7 +90,7 @@ function awsscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_LINUX2_HOST $_BTO_AWS_P
 export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
 export _BTO_AWS_UBUNTU_HOST="ec2-3-16-94-59.us-east-2.compute.amazonaws.com"
 function ubuntu_bto() { awsssh $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_UBUNTU_USER}; }
-function ubuntuscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_USER; }
+function ubuntuscp_bto()  { awsscp $1 ${2:-./tmp} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 
 #----------------------------
 
