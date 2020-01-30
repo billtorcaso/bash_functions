@@ -16,6 +16,6 @@ function fns()      {
 function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
 function fned_all() { vi $_BT_BASH_ALL_RC_FILES ; }
 
-fns;    #  Set all my Bash functions
+fns;    #  Set all my Bash functions from files in _BT_BASH_FNED_FILES
 
 true
