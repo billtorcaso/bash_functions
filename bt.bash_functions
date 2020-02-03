@@ -39,11 +39,14 @@ _BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
 
 #----------------------------
 
-# billtorcaso.org on AWS + EC2
+# billtorcaso.org on MAC + AWS + EC2
 #   This is what we want to achieve:
 #
 #       ssh -i "billtorcasoorg.pem" ec2-user@ec2-3-14-194-51.us-east-2.compute.amazonaws.com
 #
+#--- Local execution on this MAC
+
+
 #--- "billtorcasoorg.pem" is (supposed to be) used on all AWS EC2 servers.
 export _BTO_AWS_PEM="billtorcasoorg.pem"
 #--- Settings for my AWS_LINUX2 host machine
@@ -57,6 +60,7 @@ export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
 export _BTO_AWS_UBUNTU_HOST="ec2-3-16-94-59.us-east-2.compute.amazonaws.com"
 function ubuntu_bto()   { awsssh $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_UBUNTU_USER}; }
 function ubuntuscp_bto(){ awsscp $1 ${2:-./tmp} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
+function ubto()         { ubuntu_bto "$@"; }
 
 #----------------------------
 
