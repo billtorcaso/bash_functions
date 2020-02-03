@@ -20,6 +20,7 @@ export PATH
 #----------------------------
 
 # Navigation Function Definitions
+# TODO:  (should pull this out into a Darwin-specfic file)
 
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/Desktop" ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
@@ -49,18 +50,23 @@ _BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
 
 #--- "billtorcasoorg.pem" is (supposed to be) used on all AWS EC2 servers.
 export _BTO_AWS_PEM="billtorcasoorg.pem"
+
 #--- Settings for my AWS_LINUX2 host machine
+
 export _BTO_AWS_LINUX2_USER="billtorcaso"
 export _BTO_AWS_LINUX2_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
 function aws_bto()      { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_LINUX2_USER}; }
-function awsscp_bto()   { awsscp $1 ${2:-./tmp} $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
+function awslin_pull(){ awsscp pull "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
+function awslin_push(){ awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
 
 #--- Settings for my AWS UBUNTU host machine
+
 export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
 export _BTO_AWS_UBUNTU_HOST="ec2-3-16-94-59.us-east-2.compute.amazonaws.com"
+
 function ubuntu_bto()   { awsssh $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_UBUNTU_USER}; }
-function ubuntuscp_bto(){ awsscp $1 ${2:-./tmp} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
-function ubto()         { ubuntu_bto "$@"; }
+function ubun_pull()    { awsscp pull $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
+function ubun_push()    { awsscp push $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 
 #----------------------------
 

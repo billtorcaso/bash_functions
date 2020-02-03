@@ -1,9 +1,10 @@
 
 ###--------------------------------------------
 
-#   This is fundamental to all other "_BT_*" env variables.
+#   This is fundamental to all other "_BT_GIT_*" env variables.
 
 export _BT_GIT_REPOS_HERE="$HOME/billtorcaso-repos-here"
+
 function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
 
 ###--------------------------------------------
@@ -11,11 +12,13 @@ function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
 #   Things related to my bash_functions repo
 
 export _BT_BASH_REPO="$_BT_GIT_REPOS_HERE/bash_functions"
-export _BT_BASH_FNED_FILES="$_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/bt.bash_functions"
+export _BT_BASH_FNS_FILES="$_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/bt.bash_functions"
+export _BT_BASH_FNED_FILES="$_BT_BASH_REPO/bashrc_COPY $_BT_BASH_FNS_FILES"
+
 function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
 function fndef()    { declare -f "$@"; }
 function fns()      {
-    for thing in $(echo $_BT_BASH_FNED_FILES)
+    for thing in $(echo $_BT_BASH_FNS_FILES)
     do
         [[ -r $thing ]] && source $thing
     done
@@ -28,7 +31,7 @@ function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
 
 export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
 function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
-function bto()      { btorepo billtorcaso_org/$1; }
+function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
 
 ###--------------------------------------------
 

@@ -178,7 +178,7 @@ function shp()      { pyman shell_plus --ipython "$@"; }
 
 function awsssh()    { 
     # $1 == the target machine
-    # $2 == the name of a key-pair file in ${KEYPAIR_FILES_HERE:-$HOME/.ssh}
+    # $2 == the name of a key-pair file in ${_BT_KEYPAIR_FILES_HERE:-$HOME/.ssh}
     # $3 == the login user on $1.  Default is "ubuntu".
     # SSH_VERBOSE == env. variable intended to carry "-v", or nothing
 
@@ -197,25 +197,53 @@ function awsssh()    {
         # Do it.
         set -x;
         ssh ${SSH_VERBOSE} \
-            -i ${KEYPAIR_FILES_HERE:-$HOME/.ssh}/${THIS_KEYPAIR} \
+            -i ${_BT_KEYPAIR_FILES_HERE:-$HOME/.ssh}/${THIS_KEYPAIR} \
             ${THIS_USER}@${THIS_HOST};
     )
 }
 
 function awsscp()    { 
-    # $1 == the local source
-    # $2 == the remote destination. Default is "./tmp".  Might be wrong.
-    # $3 == a hostname
-    # $4 == a key-pair file name
-    # $5 == a username if other than the default 'ec2-user'
+    # This will work for any key-pair based remote system.
+    # At the moment, that includes AWS and excludes any other cloud.
+    #
+    # $1 == "push" or "pull".  Anything else is an error.
+    #
+    # $2 == the source file
+    #       if push:  the local source
+    #       else:     the remote source
+    #       There is no default
+    #
+    # $3 == the destination file
+    #       if push:  the remote destination.  Default is "."
+    #       else:     the local  destination.  Default is "."
+    #       Using the default destination can overwrite something
+    #       valuable in the current directory.  Caveat user.
+    #
+    # $4 == a hostname
+    # $5 == a key-pair file name
+    # $6 == a username if other than the default 'ubuntu'
+    #
     # SCP_VERBOSE == env. variable intended to carry "-v", or nothing
+    #    use like this:  SCP_VERBOSE=-v awsscp pull foobar.txt
 
-    (   set -x;
-        scp ${SCP_VERBOSE} \
-            -i ~/.ssh/$4 \
-            $1 \
-            ${5:-ec2-user}@$3:${2:-./tmp};
-    )
+    case "$1" in
+        push)
+            (   set -x;
+                scp ${SCP_VERBOSE} \
+                    -i ~/.ssh/"$5" \
+                    "$2" \
+                    "${6:-ubuntu}@$4:${3:-.}";
+            );;
+        pull)
+            (   set -x;
+                scp ${SCP_VERBOSE} \
+                    -i ~/.ssh/"$5" \
+                    "${6:-ubuntu}@$4:$2" "${3:-.}"
+            );;
+        *)
+            echo 1>&2 "ERROR: expected 'push' or 'pull', not '$1'";
+            return 1;
+    esac
 }
 
 #----------------------------------------------------------
