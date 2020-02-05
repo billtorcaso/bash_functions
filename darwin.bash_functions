@@ -26,11 +26,20 @@ export PATH
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
 
 
+[[ -d "$_BT_GIT_REPOS_HERE/bt_bakery" ]] && {
+    export _BT_BT_BAKERY_REPO="$_BT_GIT_REPOS_HERE/bt_bakery";
+    function bt_bakerepo()  { cd $_BT_BT_BAKERY_REPO/bt_bakery/$1; }
+    function bt_bake()      { bt_bakerepo $1; }  # This is where things happen
+    function bt_bake_env()  { bt_bakerepo ../venv_bt_bakery/$1; }
+    function bt_bake_act()  { source $_BT_BT_BAKERY_REPO/venv_bt_bakery/bin/activate; }
+}
+
+
 [[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
     export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
     function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
     function bake()     { bakerepo $1; }  # This is where things happen
-    function bake_env() { bakerepo venv_billtorcaso_org/$1; }
+    function bake_env() { bakerepo ../venv_billtorcaso_org/$1; }
     function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
 }
 
