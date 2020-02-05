@@ -35,7 +35,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 #   Things related to my billtorcaso.org repo
 #   This is generic only in the sense that this is how I do things.
 
-[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso-repos-here" ]] && {
+[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org" ]] && {
     export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
 }
 

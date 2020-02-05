@@ -26,8 +26,8 @@ export PATH
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
 
 
-[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
-    export _BT_WAG_BAKERYDEMO_REPO="$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo";
+[[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
+    export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
     function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
     function bake()     { bakerepo $1; }  # This is where things happen
     function bake_env() { bakerepo venv_billtorcaso_org/$1; }
