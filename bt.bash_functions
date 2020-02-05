@@ -20,11 +20,29 @@ export PATH
 #----------------------------
 
 # Navigation Function Definitions
-# TODO:  (should pull this out into a Darwin-specfic file)
+# TODO:  (should pull much of this out into a Darwin-specfic file)
 
-[[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
-[[ -d "$HOME/Desktop" ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
+
+#   Things related to my billtorcaso.org repo
+[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso-repos-here" ]] && {
+    export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
+}
+
+[[ -d "$_BT_BILLTORCASO_ORG_REPO" ]] && {
+    function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
+    function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
+    function bto_venv() { btorepo venv_billtorcaso_org/$1; }
+    function bto_act()  { source $_BT_BILLTORCASO_ORG_REPO/venv_billtorcaso_org/bin/activate; }
+}
+
+[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
+    export _BT_WAG_BAKERYDEMO_REPO="$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo";
+    function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
+    function bake()     { bakerepo $1; }  # This is where things happen
+    function bake_env() { bakerepo venv_billtorcaso_org/$1; }
+    function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
+}
 
 #----------------------------
 
@@ -40,13 +58,12 @@ _BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
 
 #----------------------------
 
-# billtorcaso.org on MAC + AWS + EC2
-#   This is what we want to achieve:
+# billtorcaso.org on AWS + EC2
+#   This is what we want to achieve( different user and different host):
 #
-#       ssh -i "billtorcasoorg.pem" ec2-user@ec2-3-14-194-51.us-east-2.compute.amazonaws.com
+#       AWS:    ssh -i "billtorcasoorg.pem" ec2-user@ec2-3-14-194-51.us-east-2.compute.amazonaws.com
+#       UBUNTU: ssh -i "billtorcasoorg.pem" ubuntu@ec2-3-16-94-59.us-east-2.compute.amazonaws.com
 #
-#--- Local execution on this MAC
-
 
 #--- "billtorcasoorg.pem" is (supposed to be) used on all AWS EC2 servers.
 export _BTO_AWS_PEM="billtorcasoorg.pem"

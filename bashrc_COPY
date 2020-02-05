@@ -27,14 +27,6 @@ function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
 
 ###--------------------------------------------
 
-#   Things related to my billtorcaso.org repo
-
-export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
-function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
-function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
-
-###--------------------------------------------
-
 #   Activate the definitions in other files 
 
 fns;
