@@ -19,23 +19,12 @@ export PATH
 
 #----------------------------
 
-# Navigation Function Definitions
+# Navigation Function Definitions and things related to my various non-generic repos
 
 [[ -d "$HOME/Desktop"   ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
 
-#   Things related to my billtorcaso.org repo
-[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso-repos-here" ]] && {
-    export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
-}
-
-[[ -d "$_BT_BILLTORCASO_ORG_REPO" ]] && {
-    function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
-    function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
-    function bto_venv() { btorepo venv_billtorcaso_org/$1; }
-    function bto_act()  { source $_BT_BILLTORCASO_ORG_REPO/venv_billtorcaso_org/bin/activate; }
-}
 
 [[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
     export _BT_WAG_BAKERYDEMO_REPO="$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo";
@@ -47,32 +36,38 @@ export PATH
 
 #----------------------------
 
-# Non-generic functions that happen to work on this machine.
-
-function md5r()     { md5 -r $@ | sort; }
-
-#----------------------------
-
 # the learnwagtail.com tutorial on this local machine 
 
-_BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
+[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
+    _BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
+}
 
 #----------------------------
 
 # Function 'play' - go to the root directory of play projects
 
-export _BT_PLAY_HERE="$HOME/Desktop/00-Bill-TECH/play"
-function play() { cd "$_BT_PLAY_HERE/$1"; }
+[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
+    export _BT_PLAY_HERE="$HOME/Desktop/00-Bill-TECH/play"
+    function play() { cd "$_BT_PLAY_HERE/$1"; }
+}
 
 #----------------------------
 
 # This is the Wagtail open-source photo gallery project.  
 # see github 
 
-export _BT_WAGTAIL_PHOTO_GALLERY_ROOT="$_BT_PLAY_HERE/wagtail-photo-gallery-here"
-function wpg_root() { cd "$_BT_WAGTAIL_PHOTO_GALLERY_ROOT/$1"; }
-function wpg()      { wpg_root "wagtail_photo_gallery/$1"; }
-function wpgact()   { source "$_BT_WAGTAIL_PHOTO_GALLERY_ROOT/venv_wagtail_photo_gallery/bin/activate"; }
-function wpgdeact() { deactivate; }
-function wpg_go()   { wtact && wt $1; }
+[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
+    export _BT_WAGTAIL_PHOTO_GALLERY_ROOT="$_BT_PLAY_HERE/wagtail-photo-gallery-here"
+    function wpg_root() { cd "$_BT_WAGTAIL_PHOTO_GALLERY_ROOT/$1"; }
+    function wpg()      { wpg_root "wagtail_photo_gallery/$1"; }
+    function wpgact()   { source "$_BT_WAGTAIL_PHOTO_GALLERY_ROOT/venv_wagtail_photo_gallery/bin/activate"; }
+    function wpgdeact() { deactivate; }
+    function wpg_go()   { wtact && wt $1; }
+}
+
+#----------------------------
+
+# Non-generic functions that happen to work on this machine.
+
+function md5r()     { md5 -r $@ | sort; }
 

@@ -32,6 +32,21 @@ function setPS1()  {
 function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 #----------------------------------------------------------
+#   Things related to my billtorcaso.org repo
+#   This is generic only in the sense that this is how I do things.
+
+[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso-repos-here" ]] && {
+    export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
+}
+
+[[ -d "$_BT_BILLTORCASO_ORG_REPO" ]] && {
+    function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
+    function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
+    function bto_venv() { btorepo venv_billtorcaso_org/$1; }
+    function bto_act()  { source $_BT_BILLTORCASO_ORG_REPO/venv_billtorcaso_org/bin/activate; }
+}
+
+#----------------------------------------------------------
 # General Bash services, defined as bash functions
 
 function cls()      { clear; }
