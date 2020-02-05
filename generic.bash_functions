@@ -40,7 +40,7 @@ function dfh()      { df -h "${@:-.}"; }
 function dush()     { du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
-### This is not very useful:    function fndeF()    { declare -F $@; }
+function fndeF()    { declare -F $@; }
 function fndeFg()   { declare -F | grep $@; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
@@ -144,11 +144,6 @@ gbr_obliterate () {
     echo "git push origin --delete '$1' && git branch -d '$1'"
 }
 
-#   These don't get much use - may delete them sometime.
-
-function gmod_OLD() { ginfo | awk '$0 ~ /^\t/ && $1 == "modified:" { print $2; }'; }
-function gtop()     { cd $(git rev-parse --show-cdup)/${1:-.} && pwd; }
-
 #----------------------------------------------------------
 
 # For a Wagtail-based Django project (only)
@@ -162,12 +157,14 @@ function vimod()    { vi ${1:-*}/models.py; }
 
 function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
-function runserver(){ pyman runserver "$@"; }
+function run8000()  { cls; runserve ${1-dev} 8000; }
+function run9000()  { cls; runserve ${1-dev} 9000; }
 function runserve() { 
     pyman runserver \
           --settings="$(basename $(pwd)).settings.${1:-dev}" \
           "0.0.0.0:${2:-8000}" ; 
 }
+function runserver(){ pyman runserver "$@"; }
 function mmm()      { pymanc makemigrations && pyman migrate; }
 function mmmr()     { mmm && runserve "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
@@ -204,7 +201,7 @@ function awsssh()    {
 
 function awsscp()    { 
     # This will work for any key-pair based remote system.
-    # At the moment, that includes AWS and excludes any other cloud.
+    # At the moment, that includes AWS and any other cloud vendor is unknown.
     #
     # $1 == "push" or "pull".  Anything else is an error.
     #
@@ -270,11 +267,10 @@ function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3
 
 # Vagrant commands
 
-function vgr()      { vagrant $@; }
-function vag()      { echo "Use 'vgr', not 'vag'!"; vgr $@; }
-function vgrst()    { vgr global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
-function vssh()     { ( set -x; vgr ssh "$@"; ) }
-function upshell()  { vgr up && vssh "$@"; }
+function vg()       { vagrant $@; }
+function vggst()    {  vg global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
+function vssh()     { ( set -x;  vg ssh "$@"; ) }
+function upshell()  {  vg up && vssh "$@"; }
 
 #----------------------------------------------------------
 

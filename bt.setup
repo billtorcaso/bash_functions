@@ -1,0 +1,62 @@
+###--------------------------------------------
+#
+#   Decide what platform we are on right now ...
+#
+ case "$(uname -a)" in 
+     *Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
+     *amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
+     *Darwin*) export _BT_PLATFORM_NAME="darwin";;
+     *)
+         echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
+         exit 1
+     ;;
+ esac
+
+###--------------------------------------------
+
+#   This is fundamental to all other "_BT_GIT_*" env variables.
+
+[[ -d "$HOME/billtorcaso-repos-here" ]] && \
+{
+    export _BT_GIT_REPOS_HERE="$HOME/billtorcaso-repos-here"
+    function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
+} || \
+{
+    echo 1>&2 "PANIC: cannot find Bill Torcaso repository root.  Get help."
+    exit 1;
+}
+
+###--------------------------------------------
+
+#   Things related to my bash_functions repo
+#   Note the distinction between FNED_FILES and FNS_FILES,
+#   to avoid infinite recursion.
+
+[[ -d "$_BT_GIT_REPOS_HERE/bash_functions" ]] && \
+{
+    export _BT_BASH_REPO="$_BT_GIT_REPOS_HERE/bash_functions"
+    export _BT_BASH_FNS_FILES="$_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/$_BT_PLATFORM_NAME.bash_functions"
+    export _BT_BASH_FNED_FILES="$_BT_BASH_REPO/bt.setup $_BT_BASH_FNS_FILES"
+
+    function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+    function fndef()    { declare -f "$@"; }
+    function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
+    function fns()      {
+        for thing in $(echo $_BT_BASH_FNS_FILES)
+        do
+            [[ -r $thing ]] && source $thing
+        done
+    }
+} || \
+{
+    echo 1>&2 "PANIC: cannot find bash functions root!  Get help."
+    exit 1;
+}
+
+###--------------------------------------------
+
+#   Activate the definitions in _BT_BASH_FNS_FILES 
+
+fns;
+
+true    # That's all, folks!
