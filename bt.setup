@@ -60,5 +60,9 @@
 
 fns;
 
-setPS1
+case "$_BT_PLATFORM_NAME" in 
+    ubuntu)     magenta_prompt;;
+    awslinux)   cyan_prompt;;
+    darwin)     setPS1;;
+esac
 true    # That's all, folks!

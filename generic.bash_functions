@@ -55,6 +55,7 @@ function dfh()      { df -h "${@:-.}"; }
 function dush()     { du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
+function fneg ()    { declare -F | grep "$@"; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
 function logs()     { tmp logs/$1; }
