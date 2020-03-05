@@ -41,6 +41,7 @@
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
     function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
+    function fneg()     { declare -F | grep "$@"; }
     function fns()      {
         for thing in $(echo $_BT_BASH_FNS_FILES)
         do
@@ -59,4 +60,5 @@
 
 fns;
 
+setPS1
 true    # That's all, folks!

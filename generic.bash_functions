@@ -55,8 +55,6 @@ function dfh()      { df -h "${@:-.}"; }
 function dush()     { du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
-function fndeF()    { declare -F $@; }
-function fndeFg()   { declare -F | grep $@; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
 function logs()     { tmp logs/$1; }
@@ -165,6 +163,7 @@ gbr_obliterate () {
 
 function visett()   { vi */settings/[a-z]*.py; }
 function vimod()    { vi ${1:-*}/models.py; }
+function vireq()    { vi requirements.txt requirements/*; }
 
 #----------------------------------------------------------
 
@@ -283,6 +282,7 @@ export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
 export _BTO_AWS_UBUNTU_HOST="ec2-3-16-94-59.us-east-2.compute.amazonaws.com"
 
 function ubuntu_bto()   { awsssh $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_UBUNTU_USER}; }
+function ub_bto()       { ubuntu_bto "$@"; }  # Just convenience
 function ubun_pull()    { awsscp pull $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 function ubun_push()    { awsscp push $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 
