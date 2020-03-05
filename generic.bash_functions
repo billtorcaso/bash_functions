@@ -31,20 +31,42 @@ function setPS1()  {
 #   whole top line
 function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
-#----------------------------------------------------------
-#   Things related to my billtorcaso.org repo
-#   This is generic only in the sense that this is how I do things.
+#----------------------------
 
-[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org" ]] && {
-    export _BT_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org"
+# Navigation Function Definitions and things related to my various repos.  
+#
+# This is generic only because each stanza is guarded by a test for whether 
+# the target directory exists or not.
+
+[[ -d "$HOME/Desktop"   ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
+[[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
+[[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
+
+[[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \
+    export _BT_SSD_HP_600="/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase";
+    function ssdrepo()  { cd $_BT_SSD_HP_600/$1 && pwd; }
+    function ssd_btb()  { ssdrepo bakerydemo/$1; }  # This is where things happen
+    function ssd_venv() { ssdrepo venv_bakerydemo/$1; }
+    function ssd_act()  { source $_BT_SSD_HP_600/venv_bakerydemo/bin/activate; }
 }
 
-[[ -d "$_BT_BILLTORCASO_ORG_REPO" ]] && {
-    function btorepo()  { cd $_BT_BILLTORCASO_ORG_REPO/$1; }
-    function bto()      { btorepo billtorcaso_org/$1; }  # This is where things happen
-    function bto_venv() { btorepo venv_billtorcaso_org/$1; }
-    function bto_act()  { source $_BT_BILLTORCASO_ORG_REPO/venv_billtorcaso_org/bin/activate; }
+[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase" ]] && {
+    export _BT_BT_BAKERY_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase";
+    function btbrepo()  { cd $_BT_BT_BAKERY_REPO/$1; }
+    function btb()      { btbrepo bakerydemo/$1; }  # This is where things happen
+    function btbb()     { btb bakerydemo/$1; }  # This is where things happen
+    function btb_env()  { btbrepo ../venv_bakerydemo/$1; }
+    function btb_act()  { source $_BT_BT_BAKERY_REPO/venv_bakerydemo/bin/activate; }
 }
+
+[[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
+    export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
+    function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
+    function bake()     { bakerepo $1; }  # This is where things happen
+    function bake_env() { bakerepo ../venv_bakerydemo/$1; }
+    function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
+}
+
 
 #----------------------------------------------------------
 # General Bash services, defined as bash functions
