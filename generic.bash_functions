@@ -243,15 +243,15 @@ function awsscp()    {
     # $1 == "push" or "pull".  Anything else is an error.
     #
     # $2 == the source file
-    #       if push:  the local source
-    #       else:     the remote source
-    #       There is no default
+    #       if push:    the local source
+    #       elif pull:  the remote source
+    #       else error
     #
     # $3 == the destination file
-    #       if push:  the remote destination.  Default is "."
-    #       else:     the local  destination.  Default is "."
-    #       Using the default destination can overwrite something
-    #       valuable in the current directory.  Caveat user.
+    #       if push:    the remote destination.  Default is "."
+    #       elif pull:  the local  destination.  Default is "."
+    #       Caveat User: Using the default destination can overwrite 
+    #       something valuable in the current directory.  
     #
     # $4 == a hostname
     # $5 == a key-pair file name
@@ -291,14 +291,6 @@ function awsscp()    {
 #--- "billtorcasoorg.pem" is (supposed to be) used on all AWS EC2 servers.
 export _BTO_AWS_PEM="billtorcasoorg.pem"
 
-#--- Settings for my AWS_LINUX2 host machine
-
-export _BTO_AWS_LINUX2_USER="billtorcaso"
-export _BTO_AWS_LINUX2_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
-function aws_bto()      { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_LINUX2_USER}; }
-function awslin_pull(){ awsscp pull "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
-function awslin_push(){ awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
-
 #--- Settings for my AWS UBUNTU host machine
 
 export _BTO_AWS_UBUNTU_USER="ubuntu";  # Someday, convert to "billtorcaso"
@@ -309,16 +301,24 @@ function ub_bto()       { ubuntu_bto "$@"; }  # Just convenience
 function ubun_pull()    { awsscp pull $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 function ubun_push()    { awsscp push $1 ${2:-.} $_BTO_AWS_UBUNTU_HOST $_BTO_AWS_PEM $_BTO_AWS_UBUNTU_USER; }
 
-#----------------------------------------------------------
+#--- Settings for my AWS_LINUX2 host machine (now defunct)
 
-#   Generic SCP shortcut functions WITHOUT a key-pair file
+export _BTO_AWS_LINUX2_USER="billtorcaso"
+export _BTO_AWS_LINUX2_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
+function aws_bto()      { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_LINUX2_USER}; }
+function awslin_pull(){ awsscp pull "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
+function awslin_push(){ awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
 
-#   The pull operations are "person, servername, thing, destination"
-#   The push operations are "thing, person, servername, destination"
-
-function scppull()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}@${2}:${3}" "${4:-.}"; ) }
-function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3}:${4:-.}"; ) }
-
+####----------------------------------------------------------
+###
+####   OBSOLETE:   Generic SCP shortcut functions WITHOUT a key-pair file
+###
+####   The pull operations are "person, servername, thing, destination"
+####   The push operations are "thing, person, servername, destination"
+###
+###function scppull()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}@${2}:${3}" "${4:-.}"; ) }
+###function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3}:${4:-.}"; ) }
+###
 #----------------------------------------------------------
 
 # Navigation within my $HOME directory tree
@@ -329,12 +329,14 @@ function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3
 
 #----------------------------------------------------------
 
-# Vagrant commands
+#   Vagrant commands (if vagrant is installed locally)
 
-function vg()       { vagrant $@; }
-function vggst()    {  vg global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
-function vssh()     { ( set -x;  vg ssh "$@"; ) }
-function upshell()  {  vg up && vssh "$@"; }
+[[ "$(which -s vagrant; echo $?)" == 0 ]] && {
+    function vg()       { vagrant $@; }
+    function vggst()    {  vg global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
+    function vssh()     { ( set -x;  vg ssh "$@"; ) }
+    function upshell()  {  vg up && vssh "$@"; }
+}
 
 #----------------------------------------------------------
 
