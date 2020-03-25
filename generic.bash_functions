@@ -42,11 +42,20 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
 
+[[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
+    export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
+    function btorrepo()  { cd $_BT_BT_REBUILD_REPO/$1; }
+    function btor()      { btorrepo bto_rebuild/$1; } # This is where things run
+    function btorb()     { btor bto_rebuild/$1; }     # This is where coding happens
+    function btorenv()   { btorrepo venv_bto_rebuild/$1; }
+    function btor_act()  { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; }
+}
+
 [[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \
     export _BT_SSD_HP_600="/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase";
     function ssdrepo()  { cd $_BT_SSD_HP_600/$1 && pwd; }
     function ssd_btb()  { ssdrepo bakerydemo/$1; }  # This is where things happen
-    function ssd_venv() { ssdrepo venv_bakerydemo/$1; }
+    function ssdvenv()  { ssdrepo venv_bakerydemo/$1; }
     function ssd_act()  { source $_BT_SSD_HP_600/venv_bakerydemo/bin/activate; }
 }
 
@@ -55,7 +64,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
     function btbrepo()  { cd $_BT_BT_BAKERY_REPO/$1; }
     function btb()      { btbrepo bakerydemo/$1; }  # This is where things happen
     function btbb()     { btb bakerydemo/$1; }  # This is where things happen
-    function btb_env()  { btbrepo ../venv_bakerydemo/$1; }
+    function btbenv()   { btbrepo venv_bakerydemo/$1; }
     function btb_act()  { source $_BT_BT_BAKERY_REPO/venv_bakerydemo/bin/activate; }
 }
 
@@ -63,7 +72,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
     export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
     function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
     function bake()     { bakerepo $1; }  # This is where things happen
-    function bake_env() { bakerepo ../venv_bakerydemo/$1; }
+    function bakeenv()  { bakerepo venv_bakerydemo/$1; }
     function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
 }
 

@@ -15,7 +15,7 @@
 
 # Setting PATH for Python 3.8
 PY38_ROOT="/Library/Frameworks/Python.framework/Versions/3.8"
-[[ "$(ls -q $PY38_ROOT; echo $?)" == 0 ]] && {
+[[ -r "$PY38_ROOT" ]] && {
 export PATH="$PY38_ROOT/bin:$PATH"
 }
 
