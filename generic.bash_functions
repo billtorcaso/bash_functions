@@ -44,11 +44,12 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 [[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
     export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
-    function btorrepo()  { cd $_BT_BT_REBUILD_REPO/$1; }
-    function btor()      { btorrepo bto_rebuild/$1; } # This is where things run
-    function btorb()     { btor bto_rebuild/$1; }     # This is where coding happens
-    function btorenv()   { btorrepo venv_bto_rebuild/$1; }
-    function btor_act()  { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; }
+    function btorrepo() { cd $_BT_BT_REBUILD_REPO/$1; }
+    function btor()     { btorrepo bto_rebuild/$1; } # This is where things run
+    function btorb()    { btor bto_rebuild/$1; }     # This is where coding happens
+    function btorenv()  { btorrepo venv_bto_rebuild/$1; }
+    function btor_act() { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; colorPS1; }
+    function btor_go()  { btor && btor_act; }
 }
 
 [[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \

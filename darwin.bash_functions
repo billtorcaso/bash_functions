@@ -6,6 +6,7 @@
 
 [[ -d "$HOME/Desktop/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE" ]] && {
     function _prih(){ cd $HOME/Desktop/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE/$1 && pwd; }
+    function _pr()  { _desk Photo-Recovery/$1; }
     function s3p()  { ( _prih && sql3 $@ ./sql-here/photo-recovery-info.db; ) }
     function ffgo() { _prih ff-here/$1; }
     function mdgo() { _prih md5hash-here/$1; }
