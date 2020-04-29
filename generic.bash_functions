@@ -197,6 +197,8 @@ gbr_obliterate () {
 function visett()   { vi */settings/[a-z]*.py; }
 function vimod()    { vi ${1:-*}/models.py; }
 function vireq()    { vi requirements.txt requirements/*; }
+# This needs work.
+function vih()      { vi $(ffeg html | grep -v -e [45]0[40] -e search); }
 
 #----------------------------------------------------------
 

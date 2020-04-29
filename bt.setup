@@ -29,28 +29,29 @@
 ###--------------------------------------------
 
 #   Things related to my bash_functions repo
-#   Note the distinction between FNED_FILES and FNS_FILES,
-#   to avoid infinite recursion.
 
 [[ -d "$_BT_GIT_REPOS_HERE/bash_functions" ]] && \
 {
     export _BT_BASH_REPO="$_BT_GIT_REPOS_HERE/bash_functions"
-    export _BT_BASH_FNS_FILES="$_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/$_BT_PLATFORM_NAME.bash_functions"
-    export _BT_BASH_FNED_FILES="$_BT_BASH_REPO/bt.setup $_BT_BASH_FNS_FILES"
+    export _BT_BASH_BT_SETUP_FILE="$_BT_BASH_REPO/bt.setup"
+    export _BT_BASH_FNED_FILES="$_BT_BASH_BT_SETUP_FILE $_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/$_BT_PLATFORM_NAME.bash_functions"
 
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
     function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
     function fneg()     { declare -F | grep "$@"; }
     function fns()      {
-        for thing in $(echo $_BT_BASH_FNS_FILES)
+        for thing in $(echo $_BT_BASH_FNED_FILES | \
+            sed "s@$_BT_BASH_BT_SETUP_FILE@@")
         do
-            [[ -r $thing ]] && source $thing
+            [[ -r $thing ]] && \
+              source $thing || \
+              { echo "'source $thing' failed;"; break; }
         done
     }
 } || \
 {
-    echo 1>&2 "PANIC: cannot find bash functions root!  Get help."
+    echo 1>&2 "PANIC: cannot find bash functions repo directory!  Get help."
     exit 1;
 }
 
@@ -60,9 +61,14 @@
 
 fns;
 
+###--------------------------------------------
+
+#   Set the Bash prompt based on which platform this is.
+
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
     darwin)     setPS1;;
 esac
+
 true    # That's all, folks!
