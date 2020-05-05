@@ -16,11 +16,11 @@
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
-function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[30m\]'; }
+###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
 function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
 
 #   This is my favorite for local use: The foreground of the prompt is white text on a teal background
@@ -362,7 +362,7 @@ function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO
 
 #   Vagrant commands (if vagrant is installed locally)
 
-[[ "$(which -s vagrant; echo $?)" == 0 ]] && {
+[[ "$(which vagrant> /dev/null 2>&1; echo $?)" == 0 ]] && {
     function vg()       { vagrant $@; }
     function vggst()    {  vg global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
     function vssh()     { ( set -x;  vg ssh "$@"; ) }
