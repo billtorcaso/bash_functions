@@ -233,7 +233,7 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function runserver(){ pyman runserver "$@"; }
-function mmm()      { pymanc makemigrations && pyman migrate; }
+function mmm()      { pymanc makemigrations "${@:--v 3}" && pyman migrate "${@:--v 3}" ; }
 function mmmr()     { mmm && runserve "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
 
