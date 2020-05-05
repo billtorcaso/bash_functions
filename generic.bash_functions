@@ -42,6 +42,21 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
 
+[[ -d "$_BT_GIT_REPOS_HERE/www_billtorcaso_org" ]] && {
+    export _BT_WWW_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/www_billtorcaso_org";
+    function btorepo()  { cd $_BT_WWW_BILLTORCASO_ORG_REPO/$1; }
+    function bto()      { btorepo $1; } # This is where things run
+    function btow()     { bto www_billtorcaso_org/$1; }
+    function btoenv()   { btorepo venv_bto_rebuild/$1; }
+    function bto_act()  { source $_BT_WWW_BILLTORCASO_ORG_REPO/venv_www_billtorcaso_org/bin/activate; colorPS1; }
+    function bto_go()   { bto && bto_act; }
+    # The above functions are standard.  Here are the special-purpose ones.
+    function bp()       { bto BTOPage/$1; }
+    function bpt()      { bp templates/BTOPage/$1; }
+    function bpc()      { bp static/css/$1; }
+}
+
+
 [[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
     export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
     function btorrepo() { cd $_BT_BT_REBUILD_REPO/$1; }
@@ -198,7 +213,11 @@ function visett()   { vi */settings/[a-z]*.py; }
 function vimod()    { vi ${1:-*}/models.py; }
 function vireq()    { vi requirements.txt requirements/*; }
 # This needs work.
-function vih()      { vi $(ffeg html | grep -v -e [45]0[40] -e search); }
+function vih()      { vi "$@" $(ffeg html | grep -v -e [45]0[40] -e search -e welcome_page); }
+function vihome()   { vi ./home/templates/home/home_page.html \
+                         ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
+                         ./www_billtorcaso_org/templates/base.html; 
+                    }
 
 #----------------------------------------------------------
 
@@ -394,6 +413,4 @@ function fail()     { msg "FAIL: " "$@"; exit 1; }
 
 #----------------------------------------------------------
 
-# The end.
-
-true
+true    # That's all, folks!

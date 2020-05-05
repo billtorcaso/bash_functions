@@ -64,6 +64,7 @@ fns;
 ###--------------------------------------------
 
 #   Set the Bash prompt based on which platform this is.
+#   Must wait until after the '*_prompt' functions are defined.
 
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
