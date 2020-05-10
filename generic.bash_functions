@@ -213,8 +213,9 @@ function visett()   { vi */settings/[a-z]*.py; }
 function vimod()    { vi ${1:-*}/models.py; }
 function vireq()    { vi requirements.txt requirements/*; }
 # This needs work.
-function vih()      { vi "$@" $(ffeg html | grep -v -e [45]0[40] -e search -e welcome_page); }
-function vihome()   { vi ./home/templates/home/home_page.html \
+function vihtml()   { vi "$@" $(ffeg html | grep -v -e [45]0[40] -e search -e welcome_page); }
+function vihome()   { vi "$@" \
+                         ./home/templates/home/home_page.html \
                          ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
                          ./www_billtorcaso_org/templates/base.html; 
                     }
