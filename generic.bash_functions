@@ -51,47 +51,47 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
     function bto_act()  { source $_BT_WWW_BILLTORCASO_ORG_REPO/venv_www_billtorcaso_org/bin/activate; colorPS1; }
     function bto_go()   { bto && bto_act; }
     # The above functions are standard.  Here are the special-purpose ones.
-    function bp()       { bto BTOPage/$1; }
-    function bpt()      { bp templates/BTOPage/$1; }
-    function bpc()      { bp static/css/$1; }
+    function btp()      { bto BTOPage/$1; }
+    function btpt()     { btp templates/BTOPage/$1; }
 }
 
+####    These are old-think
 
-[[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
-    export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
-    function btorrepo() { cd $_BT_BT_REBUILD_REPO/$1; }
-    function btor()     { btorrepo bto_rebuild/$1; } # This is where things run
-    function btorb()    { btor bto_rebuild/$1; }     # This is where coding happens
-    function btorenv()  { btorrepo venv_bto_rebuild/$1; }
-    function btor_act() { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; colorPS1; }
-    function btor_go()  { btor && btor_act; }
-}
-
-[[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \
-    export _BT_SSD_HP_600="/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase";
-    function ssdrepo()  { cd $_BT_SSD_HP_600/$1 && pwd; }
-    function ssd_btb()  { ssdrepo bakerydemo/$1; }  # This is where things happen
-    function ssdvenv()  { ssdrepo venv_bakerydemo/$1; }
-    function ssd_act()  { source $_BT_SSD_HP_600/venv_bakerydemo/bin/activate; }
-}
-
-[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase" ]] && {
-    export _BT_BT_BAKERY_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase";
-    function btbrepo()  { cd $_BT_BT_BAKERY_REPO/$1; }
-    function btb()      { btbrepo bakerydemo/$1; }  # This is where things happen
-    function btbb()     { btb bakerydemo/$1; }  # This is where things happen
-    function btbenv()   { btbrepo venv_bakerydemo/$1; }
-    function btb_act()  { source $_BT_BT_BAKERY_REPO/venv_bakerydemo/bin/activate; }
-}
-
-[[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
-    export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
-    function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
-    function bake()     { bakerepo $1; }  # This is where things happen
-    function bakeenv()  { bakerepo venv_bakerydemo/$1; }
-    function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
-}
-
+###[[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
+###    export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
+###    function btorrepo() { cd $_BT_BT_REBUILD_REPO/$1; }
+###    function btor()     { btorrepo bto_rebuild/$1; } # This is where things run
+###    function btorb()    { btor bto_rebuild/$1; }     # This is where coding happens
+###    function btorenv()  { btorrepo venv_bto_rebuild/$1; }
+###    function btor_act() { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; colorPS1; }
+###    function btor_go()  { btor && btor_act; }
+###}
+###
+###[[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \
+###    export _BT_SSD_HP_600="/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase";
+###    function ssdrepo()  { cd $_BT_SSD_HP_600/$1 && pwd; }
+###    function ssd_btb()  { ssdrepo bakerydemo/$1; }  # This is where things happen
+###    function ssdvenv()  { ssdrepo venv_bakerydemo/$1; }
+###    function ssd_act()  { source $_BT_SSD_HP_600/venv_bakerydemo/bin/activate; }
+###}
+###
+###[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase" ]] && {
+###    export _BT_BT_BAKERY_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase";
+###    function btbrepo()  { cd $_BT_BT_BAKERY_REPO/$1; }
+###    function btb()      { btbrepo bakerydemo/$1; }  # This is where things happen
+###    function btbb()     { btb bakerydemo/$1; }  # This is where things happen
+###    function btbenv()   { btbrepo venv_bakerydemo/$1; }
+###    function btb_act()  { source $_BT_BT_BAKERY_REPO/venv_bakerydemo/bin/activate; }
+###}
+###
+###[[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
+###    export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
+###    function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
+###    function bake()     { bakerepo $1; }  # This is where things happen
+###    function bakeenv()  { bakerepo venv_bakerydemo/$1; }
+###    function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
+###}
+###
 
 #----------------------------------------------------------
 # General Bash services, defined as bash functions
@@ -131,7 +131,13 @@ function wcl()      { wc -l "$@"; }
 #   AND they exclude '.git/*' and similar junk
 
 #   exclude bothersome files from the list of files coming in on stdin
-function _grep_excludes() { grep -v -e /.sass-cache/ -e ^Binary -e '/venv_' -e /[.]git/ ; }
+function _grep_excludes() { 
+    grep -v -e '[.]pyc$' 
+            -e /.sass-cache/ 
+            -e ^Binary 
+            -e '/venv_' 
+            -e /[.]git/ ; 
+}
 
 function _drop_first_two_chars()    { sed 's/^..//' $@; }
 
@@ -218,6 +224,10 @@ function vihome()   { vi "$@" \
                          ./home/templates/home/home_page.html \
                          ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
                          ./www_billtorcaso_org/templates/base.html; 
+                    }
+function vicss()    { vi "$@" \
+                         ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
+                         ;
                     }
 
 #----------------------------------------------------------
