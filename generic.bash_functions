@@ -49,7 +49,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
     function btow()     { bto www_billtorcaso_org/$1; }
     function btoenv()   { btorepo venv_bto_rebuild/$1; }
     function bto_act()  { source $_BT_WWW_BILLTORCASO_ORG_REPO/venv_www_billtorcaso_org/bin/activate; colorPS1; }
-    function bto_go()   { bto && bto_act; }
+    function bto_go()   { bto && bto_act && ginc; }
     # The above functions are standard.  Here are the special-purpose ones.
     function btp()      { bto BTOPage/$1; }
     function btpt()     { btp templates/BTOPage/$1; }
@@ -96,10 +96,11 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 #----------------------------------------------------------
 # General Bash services, defined as bash functions
 
+function blackdot() { black "${@:-.}"; }  # The semi-standard Python reformatting tool.
 function cls()      { clear; }
 function deact()    { deactivate; } # just laziness
 function dfh()      { df -h "${@:-.}"; }
-function dush()     { du -sh "${@:-.}"; }
+function dush()     { sudoo du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
 function fneg ()    { declare -F | grep "$@"; }
@@ -132,11 +133,12 @@ function wcl()      { wc -l "$@"; }
 
 #   exclude bothersome files from the list of files coming in on stdin
 function _grep_excludes() { 
-    grep -v -e '[.]pyc$' 
-            -e /.sass-cache/ 
-            -e ^Binary 
-            -e '/venv_' 
-            -e /[.]git/ ; 
+    grep -v -e '[.]pyc$' \
+            -e /.sass-cache/ \
+            -e ^Binary \
+            -e '/venv_' \
+            -e /[.]git/ \
+            ;
 }
 
 function _drop_first_two_chars()    { sed 's/^..//' $@; }
