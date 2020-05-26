@@ -53,6 +53,9 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
     # The above functions are standard.  Here are the special-purpose ones.
     function btp()      { bto BTOPage/$1; }
     function btpt()     { btp templates/BTOPage/$1; }
+
+    # This is an experiment for use with visett
+    function bt()       { btorepo "$@"; }
 }
 
 ####    These are old-think
@@ -156,10 +159,9 @@ function fall()     { find "${@:-.}" | sort; }
 #   grep for certain targets, within a list of regular files or directories
 function ffeg()     { ff | grep "$@"; }
 function fdeg()     { fd | grep "$@"; }
+function ffpy()     { ff "$@" | grep "[.]py$" ; } #   find python files
+function ffcss()    { ffeg '[.]css$' | grep -v "/static/" ; } #   find my own CSS files
 
-
-#   find python files
-function ffpy()     { ff "$@" | grep "[.]py$" ; }
 #   These three are lazyness - apply 'vi' to selected files
 function viff()     { vi $(ff); }
 function viffeg()   { vi $(ffeg "$@"); }
@@ -217,7 +219,7 @@ gbr_obliterate () {
 
 # For a Wagtail-based Django project (only)
 
-function visett()   { vi */settings/[a-z]*.py; }
+function visett()   { ( bt && vi */settings/[a-z]*.py; ) }  #function 'bt' is always my active project.
 function vimod()    { vi ${1:-*}/models.py; }
 function vireq()    { vi requirements.txt requirements/*; }
 # This needs work.
@@ -236,6 +238,9 @@ function vicss()    { vi "$@" \
 
 # Django stuff
 
+function mm()       { pymanc makemigrations "${@:--v 3}"; }
+function mmm()      { mm && pyman migrate "${@:--v 3}" ; }
+function mmmr()     { mmm && runserve "$@"; }
 function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
 function run8000()  { cls; runserve ${1-dev} 8000; }
@@ -246,8 +251,6 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function runserver(){ pyman runserver "$@"; }
-function mmm()      { pymanc makemigrations "${@:--v 3}" && pyman migrate "${@:--v 3}" ; }
-function mmmr()     { mmm && runserve "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
 
 #--------------------------------------
