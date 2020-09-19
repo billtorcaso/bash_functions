@@ -38,9 +38,9 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 # This is generic only because each stanza is guarded by a test for whether 
 # the target directory exists or not.
 
-[[ -d "$HOME/Desktop"   ]] && function _desk(){ cd $HOME/Desktop/$1 && pwd; }
+[[ -d "$HOME/DesktopBT"   ]] && function _desk(){ cd $HOME/DesktopBT/$1 && pwd; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
-[[ -d "$HOME/Desktop/00-Bill-TECH" ]] && function _tech(){ cd $HOME/Desktop/00-Bill-TECH/$1 && pwd; }
+[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function _tech(){ cd $HOME/DesktopBT/00-Bill-TECH/$1 && pwd; }
 
 [[ -d "$_BT_GIT_REPOS_HERE/www_billtorcaso_org" ]] && {
     export _BT_WWW_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/www_billtorcaso_org";
@@ -141,6 +141,8 @@ function _grep_excludes() {
             -e ^Binary \
             -e '/venv_' \
             -e /[.]git/ \
+            -e '^[.]/media/' \
+            -e '/img/' \
             ;
 }
 
@@ -160,12 +162,14 @@ function fall()     { find "${@:-.}" | sort; }
 function ffeg()     { ff | grep "$@"; }
 function fdeg()     { fd | grep "$@"; }
 function ffpy()     { ff "$@" | grep "[.]py$" ; } #   find python files
-function ffcss()    { ffeg '[.]css$' | grep -v "/static/" ; } #   find my own CSS files
+#   find my own CSS files
+function ffcss()    { ffeg '[.]css$' | grep -v -e '^[.]/static/admin' -e '^[.]/static/wagtail'; }
 
-#   These three are lazyness - apply 'vi' to selected files
+#   These are lazyness - apply 'vi' to selected files
 function viff()     { vi $(ff); }
 function viffeg()   { vi $(ffeg "$@"); }
 function vipy()     { vi $(ffpy); }
+function viginc()   { vi $(ginc | awk '$1 !~ "##" { print $2; }'); }
 
 #----------------------------------------------------------
 

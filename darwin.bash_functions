@@ -8,8 +8,8 @@
 
 # Experiments and temporary things go here ...
 
-[[ -d "$HOME/Desktop/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE" ]] && {
-    function _prih(){ cd $HOME/Desktop/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE/$1 && pwd; }
+[[ -d "$HOME/DesktopBT/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE" ]] && {
+    function _prih(){ cd $HOME/DesktopBT/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE/$1 && pwd; }
     function _pr()  { _desk Photo-Recovery/$1; }
     function s3p()  { ( _prih && sql3 $@ ./sql-here/photo-recovery-info.db; ) }
     function ffgo() { _prih ff-here/$1; }
@@ -29,15 +29,15 @@ export PATH="$PY38_ROOT/bin:$PATH"
 #### the learnwagtail.com tutorial on this local machine 
 ###
 ###[[ -d "$_BT_BILLTORCASO_ORG_REPO/extras/bakerydemo" ]] && {
-###    _BT_WAGTAIL_2_X_TUTORIAL="$HOME/Desktop/00-Bill-TECH/play/wagtail_2.x"
+###    _BT_WAGTAIL_2_X_TUTORIAL="$HOME/DesktopBT/00-Bill-TECH/play/wagtail_2.x"
 ###}
 ###
 #----------------------------
 
 # Function 'play' - go to the root directory of play projects
 
-[[ -d "$HOME/Desktop/00-Bill-TECH/play" ]] && {
-    export _BT_PLAY_HERE="$HOME/Desktop/00-Bill-TECH/play"
+[[ -d "$HOME/DesktopBT/00-Bill-TECH/play" ]] && {
+    export _BT_PLAY_HERE="$HOME/DesktopBT/00-Bill-TECH/play"
     function play() { cd "$_BT_PLAY_HERE/$1"; }
 }
 
