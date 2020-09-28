@@ -40,7 +40,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 [[ -d "$HOME/DesktopBT"   ]] && function _desk(){ cd $HOME/DesktopBT/$1 && pwd; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
-[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function _tech(){ cd $HOME/DesktopBT/00-Bill-TECH/$1 && pwd; }
+[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bill_tech(){ cd $HOME/DesktopBT/00-Bill-TECH/$1 && pwd; }
 
 [[ -d "$_BT_GIT_REPOS_HERE/www_billtorcaso_org" ]] && {
     export _BT_WWW_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/www_billtorcaso_org";
