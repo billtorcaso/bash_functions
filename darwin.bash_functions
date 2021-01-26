@@ -8,8 +8,13 @@
 
 # Experiments and temporary things go here ...
 
+[[ -d "$HOME/bin/python38" ]] && \
+    py38_act() { source "$HOME/bin/python38/bin/activate"; }
+
 [[ -d "$HOME/DesktopBT/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE" ]] && {
-    function _prih(){ cd $HOME/DesktopBT/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE/$1 && pwd; }
+    function _prih(){ 
+      cd $HOME/DesktopBT/00-Bill-TECH/PHOTO_RECOVERY_INFO_HERE/$1 && pwd;
+    }
     function _pr()  { _desk Photo-Recovery/$1; }
     function s3p()  { ( _prih && sql3 $@ ./sql-here/photo-recovery-info.db; ) }
     function ffgo() { _prih ff-here/$1; }
@@ -18,11 +23,11 @@
 
 #----------------------------
 
-# Setting PATH for Python 3.8
-PY38_ROOT="/Library/Frameworks/Python.framework/Versions/3.8"
-[[ -r "$PY38_ROOT" ]] && {
-export PATH="$PY38_ROOT/bin:$PATH"
-}
+#### Setting PATH for Python 3.8
+###PY38_ROOT="/Library/Frameworks/Python.framework/Versions/3.8"
+###[[ -r "$PY38_ROOT" ]] && {
+###export PATH="$PY38_ROOT/bin:$PATH"
+###}
 
 ####----------------------------
 ###
@@ -32,15 +37,6 @@ export PATH="$PY38_ROOT/bin:$PATH"
 ###    _BT_WAGTAIL_2_X_TUTORIAL="$HOME/DesktopBT/00-Bill-TECH/play/wagtail_2.x"
 ###}
 ###
-#----------------------------
-
-# Function 'play' - go to the root directory of play projects
-
-[[ -d "$HOME/DesktopBT/00-Bill-TECH/play" ]] && {
-    export _BT_PLAY_HERE="$HOME/DesktopBT/00-Bill-TECH/play"
-    function play() { cd "$_BT_PLAY_HERE/$1"; }
-}
-
 #----------------------------
 
 # This is the Wagtail open-source photo gallery project.  

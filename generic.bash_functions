@@ -16,14 +16,14 @@
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
-function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
-function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
-function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
-function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
-function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
+###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
+function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
+function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
+function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
+function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
+function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n ' | sed 'd/^[+]/'; }
 
-#   This is my favorite for local use: The foreground of the prompt is white text on a teal background
+# This is my favorite for local use: The foreground of the prompt is white text on a teal background
 function setPS1()  {
     PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n'
 }
@@ -38,9 +38,26 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 # This is generic only because each stanza is guarded by a test for whether 
 # the target directory exists or not.
 
-[[ -d "$HOME/DesktopBT"   ]] && function _desk(){ cd $HOME/DesktopBT/$1 && pwd; }
+[[ -d "$HOME/DesktopBT"   ]] && function bt_desk(){ cd $HOME/DesktopBT/$1 && pwd; }
+[[ -d "$HOME/DocumentsBT"   ]] && function bt_doc(){ cd $HOME/DocumentsBT/$1 && pwd; }
 [[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
-[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bill_tech(){ cd $HOME/DesktopBT/00-Bill-TECH/$1 && pwd; }
+[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bt_tech(){ bt_desk 00-Bill-TECH/$1; }
+[[ -d "$HOME/DesktopBT/00-Money-Mgmt-Here" ]] && function money(){ bt_desk 00-Money-Mgmt-Here/$1; }
+
+#----------------------------
+
+# Function 'play' - go to the root directory of play projects
+
+[[ -d "$HOME/DesktopBT/00-Bill-TECH/play" ]] && {
+    export _BT_PLAY_HERE="$HOME/DesktopBT/00-Bill-TECH/play"
+    function play() { cd "$_BT_PLAY_HERE/$1"; }
+}
+[[ -d "$HOME/DesktopBT/00-Bill-TECH/play/PracticalPythonProjects" ]] && {
+    export _BT_PPP_HERE="$_BT_PLAY_HERE/PracticalPythonProjects/$1"; 
+    function ppp()      { play "PracticalPythonProjects/$1"; }
+    function ppp_act()  { source $_BT_PPP_HERE/venv_ppp/bin/activate; colorPS1; }
+    function ppp_go()   { ppp && ppp_act ; }
+}
 
 [[ -d "$_BT_GIT_REPOS_HERE/www_billtorcaso_org" ]] && {
     export _BT_WWW_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/www_billtorcaso_org";

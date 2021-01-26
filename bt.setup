@@ -38,7 +38,7 @@
 
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
-    function fned()     { vi $_BT_BASH_FNED_FILES "$@" && fns ; }
+    function fned()     { vi $_BT_BASH_FNED_FILES "$@"; fns ; }
     function fneg()     { declare -F | grep "$@"; }
     function fns()      {
         for thing in $(echo $_BT_BASH_FNED_FILES | \
@@ -69,7 +69,7 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    darwin)     setPS1;;
+    darwin)     setPS1; update_terminal_cwd() { true; };;
 esac
 
 true    # That's all, folks!
