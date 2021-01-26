@@ -1,0 +1,75 @@
+###--------------------------------------------
+#
+#   Decide what platform we are on right now ...
+#
+ case "$(uname -a)" in 
+     *Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
+     *amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
+     *Darwin*) export _BT_PLATFORM_NAME="darwin";;
+     *)
+         echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
+         return 1
+     ;;
+ esac
+
+###--------------------------------------------
+
+#   This is fundamental to all other "_BT_GIT_*" env variables.
+
+[[ -d "$HOME/billtorcaso-repos-here" ]] && \
+{
+    export _BT_GIT_REPOS_HERE="$HOME/billtorcaso-repos-here"
+    function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
+} || \
+{
+    echo 1>&2 "PANIC: cannot find Bill Torcaso repository root.  Get help."
+    exit 1;
+}
+
+###--------------------------------------------
+
+#   Things related to my bash_functions repo
+
+[[ -d "$_BT_GIT_REPOS_HERE/bash_functions" ]] && \
+{
+    export _BT_BASH_REPO="$_BT_GIT_REPOS_HERE/bash_functions"
+    export _BT_BASH_BT_SETUP_FILE="$_BT_BASH_REPO/bt.setup"
+    export _BT_BASH_FNED_FILES="$_BT_BASH_BT_SETUP_FILE $_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/$_BT_PLATFORM_NAME.bash_functions"
+
+    function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+    function fndef()    { declare -f "$@"; }
+    function fned()     { vi $_BT_BASH_FNED_FILES "$@"; fns ; }
+    function fneg()     { declare -F | grep "$@"; }
+    function fns()      {
+        for thing in $(echo $_BT_BASH_FNED_FILES | \
+            sed "s@$_BT_BASH_BT_SETUP_FILE@@")
+        do
+            [[ -r $thing ]] && \
+              source $thing || \
+              { echo "'source $thing' failed;"; break; }
+        done
+    }
+} || \
+{
+    echo 1>&2 "PANIC: cannot find bash functions repo directory!  Get help."
+    exit 1;
+}
+
+###--------------------------------------------
+
+#   Activate the definitions in _BT_BASH_FNS_FILES 
+
+fns;
+
+###--------------------------------------------
+
+#   Set the Bash prompt based on which platform this is.
+#   Must wait until after the '*_prompt' functions are defined.
+
+case "$_BT_PLATFORM_NAME" in 
+    ubuntu)     magenta_prompt;;
+    awslinux)   cyan_prompt;;
+    darwin)     setPS1; update_terminal_cwd() { true; };;
+esac
+
+true    # That's all, folks!
