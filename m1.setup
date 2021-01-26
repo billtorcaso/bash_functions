@@ -3,8 +3,8 @@
 #   Decide what platform we are on right now ...
 #
  case "$(uname -a)" in 
-     *Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
-     *amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
+     ###*Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
+     ###*amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
      *Darwin*) export _BT_PLATFORM_NAME="darwin";;
      *)
          echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
@@ -16,17 +16,21 @@
 
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
-[[ -d "$HOME/billtorcaso-repos-here" ]] && \
+export CODE="$HOME/Code"
+function code() { cd $CODE/$1; }
+export _BT_GIT_REPOS_HERE="$CODE/github"
+
+
+[[ -d "$_BT_GIT_REPOS_HERE" ]] && \
 {
-    export _BT_GIT_REPOS_HERE="$HOME/billtorcaso-repos-here"
     function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
 } || \
 {
     echo 1>&2 "PANIC: cannot find Bill Torcaso repository root.  Get help."
-    exit 1;
+    return 1;
 }
 
-###--------------------------------------------
+###-------------------------------------------
 
 #   Things related to my bash_functions repo
 
@@ -38,7 +42,7 @@
 
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
-    function fned()     { vi $_BT_BASH_FNED_FILES "$@"; fns ; }
+    function fned()     { vi $(echo $_BT_BASH_FNED_FILES) "$@"; fns ; }
     function fneg()     { declare -F | grep "$@"; }
     function fns()      {
         for thing in $(echo $_BT_BASH_FNED_FILES | \
@@ -49,10 +53,14 @@
               { echo "'source $thing' failed;"; break; }
         done
     }
+    # 'm1.setup' replaces 'bt.setup' on Darwin/Big Sur
+    function m1ed() {
+        fnsrepo; vi ./m1.setup; cd - ; . $HOME/Code/github/bash_functions/m1.setup 
+    }
 } || \
 {
     echo 1>&2 "PANIC: cannot find bash functions repo directory!  Get help."
-    exit 1;
+    return 1;
 }
 
 ###--------------------------------------------
@@ -69,7 +77,8 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    darwin)     setPS1; update_terminal_cwd() { true; };;
+    darwin)     PS1="> ";
+		function update_terminal_cwd() { echo "[$?]""[$(basename $PWD)]"; };;
 esac
 
 true    # That's all, folks!
