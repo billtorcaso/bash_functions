@@ -8,7 +8,7 @@
      *Darwin*) export _BT_PLATFORM_NAME="darwin";;
      *)
          echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
-         exit 1
+         return 1
      ;;
  esac
 
