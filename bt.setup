@@ -23,7 +23,7 @@
 } || \
 {
     echo 1>&2 "PANIC: cannot find Bill Torcaso repository root.  Get help."
-    exit 1;
+    return 1;
 }
 
 ###--------------------------------------------
@@ -52,7 +52,7 @@
 } || \
 {
     echo 1>&2 "PANIC: cannot find bash functions repo directory!  Get help."
-    exit 1;
+    return 1;
 }
 
 ###--------------------------------------------
@@ -72,4 +72,5 @@ case "$_BT_PLATFORM_NAME" in
     darwin)     setPS1; update_terminal_cwd() { true; };;
 esac
 
+set +x
 true    # That's all, folks!
