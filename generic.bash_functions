@@ -7,6 +7,33 @@
 # with no OS-specific or System-specific defintions.
 
 #----------------------------------------------------------
+# This is an experiment
+function ...() {
+    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
+    pwd;
+}
+
+#----------------------------------------------------------
+# This is another experiment
+function s3fetch() {
+  local this_bucket="${THIS_BUCKET:-just-plain-file-storage}"
+  local this_key="${1}"
+  local this_log="${2:-s3fetch.log}"
+  [[ "$this_bucket" == "" ]] && \
+       { echo 2>&1 "Need '--bucket'; return 1; }
+  [[ "$this_key" == "" ]] && \
+       { echo 2>&1 "Need '--key'; return 2; }
+
+  echo "$this_key" >> "$this_log" 
+  aws s3api \
+    get-object  \
+    --bucket "$this_bucket" \
+    --key "$this_key"  \
+    "$this_key" >> "$this_log" 2>&1
+   echo "$? : $this_key" > /dev/tty
+}
+
+#----------------------------------------------------------
 # I use colored prompts to indicate the type of machine this is.
 #   green     ==  development server
 #   magenta   ==  production server, and/or host of a Docker container
@@ -40,7 +67,7 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 [[ -d "$HOME/DesktopBT"   ]] && function bt_desk(){ cd $HOME/DesktopBT/$1 && pwd; }
 [[ -d "$HOME/DocumentsBT"   ]] && function bt_doc(){ cd $HOME/DocumentsBT/$1 && pwd; }
-[[ -d "$HOME/Downloads" ]] && function _down(){ cd $HOME/Downloads/$1 && pwd; }
+[[ -d "$HOME/Downloads" ]] && function down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bt_tech(){ bt_desk 00-Bill-TECH/$1; }
 [[ -d "$HOME/DesktopBT/00-Money-Mgmt-Here" ]] && function money(){ bt_desk 00-Money-Mgmt-Here/$1; }
 
@@ -48,8 +75,8 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 # Function 'play' - go to the root directory of play projects
 
-[[ -d "$HOME/DesktopBT/00-Bill-TECH/play" ]] && {
-    export _BT_PLAY_HERE="$HOME/DesktopBT/00-Bill-TECH/play"
+[[ -d "$CODE/play" ]] && {
+    export _BT_PLAY_HERE="$CODE/play"
     function play() { cd "$_BT_PLAY_HERE/$1"; }
 }
 [[ -d "$HOME/DesktopBT/00-Bill-TECH/play/PracticalPythonProjects" ]] && {
@@ -130,7 +157,7 @@ function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
 function nsl()      { nslookup "$@"; }
-function scriptlog(){ script ${1:-$HOME/tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
+function scriptlog(){ script ${1:-$HOME/Tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
 function scrls()    { screen -ls "$@"; }
 function scrr()     { screen -r "$@"; }
 function sql3()     { sqlite3 "$@"; }
@@ -152,7 +179,7 @@ function wcl()      { wc -l "$@"; }
 #   AND they exclude '.git/*' and similar junk
 
 #   exclude bothersome files from the list of files coming in on stdin
-function _grep_excludes() { 
+function _code_excludes() { 
     grep -v -e '[.]pyc$' \
             -e /.sass-cache/ \
             -e ^Binary \
@@ -166,11 +193,11 @@ function _grep_excludes() {
 function _drop_first_two_chars()    { sed 's/^..//' $@; }
 
 #   find regular files
-function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _grep_excludes | sort; }
+function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _code_excludes | sort; }
 function ffs3path() { ff "$@" | _drop_first_two_chars; }
 
 #   find directories
-function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _grep_excludes | sort; }
+function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _code_excludes | sort; }
 
 #   find all, regardless of type
 function fall()     { find "${@:-.}" | sort; }
@@ -197,10 +224,10 @@ function viginc()   { vi $(ginc | awk '$1 !~ "##" { print $2; }'); }
 function egffnx()   { find . -type f -print0 | xargs -0 grep "$@" ; }  # No exclusions
 
 #   grep within regular files, and exclude some files by name
-function egff()     { egffnx "$@" | _grep_excludes; }
+function egff()     { egffnx "$@" | _code_excludes; }
 
 #   grep within python files, and exclude some files
-function egffpy()   { find . -name '*.py' -print0 | xargs -0 grep "$@" | _grep_excludes; }
+function egffpy()   { find . -name '*.py' -print0 | xargs -0 grep "$@" | _code_excludes; }
 
 #   Slow! grep for the given command-line arguments within regular files, but use 'find ... -exec grep ...' to do it.  
 function findeg()   { time find . -type f -exec grep "$@" "{}" /dev/null ';' ; }
@@ -232,7 +259,7 @@ function gpo()      { ( local target="${@:-$(gbron)}"; set -x; git push origin "
 gbr_obliterate () {
     # How to completely annihilate a branch, locally and in the repo.
     [[ -n "$1" ]] || { echo "Need something in \$1. Try again."; return 1; }
-    echo "... If you really mean it, do this:"
+    echo "... If you really mean it, do this ..."
     echo "git push origin --delete '$1' && git branch -d '$1'"
 }
 
@@ -391,8 +418,8 @@ function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO
 
 # Navigation within my $HOME directory tree
 
-[[ -d "$HOME/bin"       ]] && function bin() { cd $HOME/bin/$1 && pwd; }
-[[ -d "$HOME/tmp"       ]] && function tmp() { cd $HOME/tmp/$1 && pwd; }
+[[ -d "$HOME/Bin"       ]] && function bin() { cd $HOME/Bin/$1 && pwd; }
+[[ -d "$HOME/Tmp"       ]] && function Tmp() { cd $HOME/Tmp/$1 && pwd; } && function tmp() { Tmp "$@"; }
 [[ -d "$HOME/.ssh"      ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
 
 #----------------------------------------------------------
@@ -421,6 +448,7 @@ function path_set() {
 
 path_set $HOME/bin
 path_set .
+path_set $HOME/tmp/s3api
 
 #----------------------------------------------------------
 
