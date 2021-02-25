@@ -77,7 +77,7 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    darwin)     PS1="> ";
+    darwin)     PS1="";
 		function update_terminal_cwd() { echo "[$?]""[$(basename $PWD)]"; };;
 esac
 
