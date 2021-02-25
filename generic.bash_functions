@@ -67,9 +67,10 @@ function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
 
 [[ -d "$HOME/DesktopBT"   ]] && function bt_desk(){ cd $HOME/DesktopBT/$1 && pwd; }
 [[ -d "$HOME/DocumentsBT"   ]] && function bt_doc(){ cd $HOME/DocumentsBT/$1 && pwd; }
-[[ -d "$HOME/Downloads" ]] && function down(){ cd $HOME/Downloads/$1 && pwd; }
 [[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bt_tech(){ bt_desk 00-Bill-TECH/$1; }
 [[ -d "$HOME/DesktopBT/00-Money-Mgmt-Here" ]] && function money(){ bt_desk 00-Money-Mgmt-Here/$1; }
+[[ -d "$HOME/Downloads" ]] && function down(){ cd $HOME/Downloads/$1 && pwd; }
+[[ -d "$HOME/Desktop" ]] && function desk(){ cd $HOME/Desktop/$1 && pwd; }
 
 #----------------------------
 
