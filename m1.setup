@@ -14,6 +14,17 @@
 
 ###--------------------------------------------
 
+#   These are experiments
+
+function s3api() { Tmp s3api/$1; }
+function s3down(){ desk m1-s3-downloads-here/$1; }
+function dih()   { desk disk-info-here/$1; }
+function dihs()  { dih Code/sql-here/$1; }
+### Just for debugging: declare -f dih
+function jpfs()  { s3down just-plain-file-storage/$1; }
+
+###--------------------------------------------
+
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
 export CODE="$HOME/Code"

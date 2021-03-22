@@ -5,6 +5,7 @@
  case "$(uname -a)" in 
      *Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
      *amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
+     *arm64*)  export _BT_PLATFORM_NAME="m1-darwin"
      *Darwin*) export _BT_PLATFORM_NAME="darwin";;
      *)
          echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
@@ -69,7 +70,7 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    darwin)     setPS1; update_terminal_cwd() { true; };;
+    *darwin)     setPS1; update_terminal_cwd() { true; };;
 esac
 
 set +x

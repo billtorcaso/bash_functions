@@ -185,7 +185,7 @@ function _code_excludes() {
             -e /.sass-cache/ \
             -e ^Binary \
             -e '/venv_' \
-            -e /[.]git/ \
+            -e '/[.]git/' \
             -e '^[.]/media/' \
             -e '/img/' \
             ;
