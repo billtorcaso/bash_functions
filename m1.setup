@@ -13,15 +13,23 @@
  esac
 
 ###--------------------------------------------
+PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
+
+###--------------------------------------------
 
 #   These are experiments
 
 function s3api() { Tmp s3api/$1; }
-function s3down(){ desk m1-s3-downloads-here/$1; }
 function dih()   { desk disk-info-here/$1; }
 function dihs()  { dih Code/sql-here/$1; }
 ### Just for debugging: declare -f dih
+function s3down(){ desk m1-s3-jpfs-here/$1; }
 function jpfs()  { s3down just-plain-file-storage/$1; }
+function bt1tb() { s3down BT-1TB-WD/$1; }
+function dfh_timer() { while dfh ${1:-.}; 
+                       do 
+                           ff | wcl; echo ===== $(date +%F-%R); sleep 5; 
+                       done ; }
 
 ###--------------------------------------------
 
@@ -30,6 +38,7 @@ function jpfs()  { s3down just-plain-file-storage/$1; }
 export CODE="$HOME/Code"
 function code() { cd $CODE/$1; }
 export _BT_GIT_REPOS_HERE="$CODE/github"
+function ifp() { code "InnovatorsForProgress/$1"; }
 
 
 [[ -d "$_BT_GIT_REPOS_HERE" ]] && \
