@@ -19,9 +19,13 @@ PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
 #   These are experiments
 
+function her()   { heroku "$@"; }
+#-----
 function s3api() { Tmp s3api/$1; }
 function dih()   { desk disk-info-here/$1; }
 function dihs()  { dih Code/sql-here/$1; }
+function sqlv()  { sql3 ${1:-v6.db}; }
+
 ### Just for debugging: declare -f dih
 function s3down(){ desk m1-s3-jpfs-here/$1; }
 function jpfs()  { s3down just-plain-file-storage/$1; }
