@@ -40,7 +40,7 @@ function dfh_timer() { while dfh ${1:-.};
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
 export CODE="$HOME/Code"
-function code() { cd $CODE/$1; }
+function code() { cd $CODE/$1; pwd; }
 export _BT_GIT_REPOS_HERE="$CODE/github"
 function ifp() { code "InnovatorsForProgress/$1"; }
 
@@ -64,7 +64,7 @@ function ifp() { code "InnovatorsForProgress/$1"; }
     export _BT_BASH_BT_SETUP_FILE="$_BT_BASH_REPO/bt.setup"
     export _BT_BASH_FNED_FILES="$_BT_BASH_BT_SETUP_FILE $_BT_BASH_REPO/generic.bash_functions $_BT_BASH_REPO/$_BT_PLATFORM_NAME.bash_functions"
 
-    function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+    function fnsrepo()  { cd $_BT_BASH_REPO/$1; pwd; }
     function fndef()    { declare -f "$@"; }
     function fned()     { vi $(echo $_BT_BASH_FNED_FILES) "$@"; fns ; }
     function fneg()     { declare -F | grep "$@"; }
@@ -102,7 +102,7 @@ case "$_BT_PLATFORM_NAME" in
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
     darwin)     PS1="";
-		function update_terminal_cwd() { echo "[$?]""[$(basename $PWD)]"; };;
+		function update_terminal_cwd() { echo "[$?]""[$(basename $(dirname $PWD))/$(basename $PWD)]"; };;
 esac
 
 true    # That's all, folks!
