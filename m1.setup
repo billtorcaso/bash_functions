@@ -19,7 +19,9 @@ PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
 #   These are experiments
 
+function t4c()   { code BT-IFP-app-here/ToolsForCuriousity-here/tools-for-curiousity-app/$1; }
 function her()   { heroku "$@"; }
+function py()    { python "$@"; }
 #-----
 function s3api() { Tmp s3api/$1; }
 function dih()   { desk disk-info-here/$1; }
