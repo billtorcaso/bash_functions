@@ -419,8 +419,11 @@ function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO
 
 # Navigation within my $HOME directory tree
 
-[[ -d "$HOME/Bin"       ]] && function bin() { cd $HOME/Bin/$1 && pwd; }
-[[ -d "$HOME/Tmp"       ]] && function Tmp() { cd $HOME/Tmp/$1 && pwd; } && function tmp() { Tmp "$@"; }
+[[ -d "$HOME/Bin"       ]] && function Bin() { cd $HOME/Bin/$1 && pwd; }
+[[ -d "$HOME/Code"      ]] && function Code() { cd $HOME/Code/$1 && pwd; } && \
+                              function code() { Code "$@"; }
+[[ -d "$HOME/Tmp"       ]] && function Tmp() { cd $HOME/Tmp/$1 && pwd; } && \
+                              function tmp() { Tmp "$@"; }
 [[ -d "$HOME/.ssh"      ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
 
 #----------------------------------------------------------
