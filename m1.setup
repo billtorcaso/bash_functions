@@ -19,9 +19,15 @@ PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
 #   These are experiments
 
-function t4c()   { code BT-IFP-app-here/ToolsForCuriousity-here/tools-for-curiousity-app/$1; }
+function ifp()   { code "Innovators-For-Purpose-here/$1"; }
+function toc()   { ifp tools-of-curiosity/$1; }
+function toca()  { t4c tools_of_curiosity_app/$1; }
+
 function her()   { heroku "$@"; }
 function py()    { python "$@"; }
+
+function pao()   { cd $HOME/PAO/$1; }
+
 #-----
 function s3api() { Tmp s3api/$1; }
 function dih()   { desk disk-info-here/$1; }
@@ -44,7 +50,6 @@ function dfh_timer() { while dfh ${1:-.};
 export CODE="$HOME/Code"
 function code() { cd $CODE/$1; pwd; }
 export _BT_GIT_REPOS_HERE="$CODE/github"
-function ifp() { code "InnovatorsForProgress/$1"; }
 
 
 [[ -d "$_BT_GIT_REPOS_HERE" ]] && \
