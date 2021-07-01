@@ -13,20 +13,30 @@
  esac
 
 ###--------------------------------------------
+PATH="$PATH:$HOME/bin"
 PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
+PATH="$PATH:/opt/homebrew/bin"
 
 ###--------------------------------------------
 
-#   These are experiments
+#   Peter And Others
 
-function ifp()   { code "Innovators-For-Purpose-here/$1"; }
-function toc()   { ifp tools-of-curiosity/$1; }
-function toca()  { t4c tools_of_curiosity_app/$1; }
+function ifp()      { code "Innovators-For-Purpose-here/$1"; }
+function toc()      { ifp tools-of-curiosity/$1; }
+function toca()     { t4c tools_of_curiosity_app/$1; }
 
-function her()   { heroku "$@"; }
-function py()    { python "$@"; }
+function her()      { heroku "$@"; }
+function py()       { python "$@"; }
 
-function pao()   { cd $HOME/PAO/$1; }
+function pao()      { cd $HOME/PAO/$1; }
+function chiah()    { pao Chia-here/$1; }
+function 3p()       { pao 3rd-party/$1; }
+function fred()     { 3rd_party freddiecoleman-here/$1; }
+function cclient()  { fred chia-client/$1; }
+function cnscan()   { fred chia-network-scanner/$1; }
+function cnh()      { 3rd_party Chia-network-here/$1; }
+function chiapos()  { cnh chiapos/$1; }
+function ptmp()     { chiah bt_tmp/$1; }
 
 #-----
 function s3api() { Tmp s3api/$1; }
