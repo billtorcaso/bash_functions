@@ -29,14 +29,15 @@ function her()      { heroku "$@"; }
 function py()       { python "$@"; }
 
 function pao()      { cd $HOME/PAO/$1; }
+function vpao()     { cd /Volumes/BT-PAO-1TB/PAO/$1; }
+function paotmp()   { chiah bt_tmp/$1; }
 function chiah()    { pao Chia-here/$1; }
-function 3p()       { pao 3rd-party/$1; }
+function 3p()       { pao 3rd-party-here/$1; }
 function fred()     { 3rd_party freddiecoleman-here/$1; }
 function cclient()  { fred chia-client/$1; }
 function cnscan()   { fred chia-network-scanner/$1; }
 function cnh()      { 3rd_party Chia-network-here/$1; }
 function chiapos()  { cnh chiapos/$1; }
-function ptmp()     { chiah bt_tmp/$1; }
 
 #-----
 function s3api() { Tmp s3api/$1; }
