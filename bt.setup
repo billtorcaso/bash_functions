@@ -5,7 +5,7 @@
  case "$(uname -a)" in 
      *Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
      *amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
-     *arm64*)  export _BT_PLATFORM_NAME="m1-darwin"
+     *arm64*)  export _BT_PLATFORM_NAME="m1-darwin";;
      *Darwin*) export _BT_PLATFORM_NAME="darwin";;
      *)
          echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
@@ -17,9 +17,9 @@
 
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
-[[ -d "$HOME/billtorcaso-repos-here" ]] && \
+[[ -d "$HOME/Code/github" ]] && \
 {
-    export _BT_GIT_REPOS_HERE="$HOME/billtorcaso-repos-here"
+    export _BT_GIT_REPOS_HERE="$HOME/Code/github"
     function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
 } || \
 {
