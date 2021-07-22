@@ -19,7 +19,7 @@ PATH="$PATH:/opt/homebrew/bin"
 
 ###--------------------------------------------
 
-#   Peter And Others
+#   Innovators For Purpose (CRLS STEM kids)
 
 function ifp()      { code "Innovators-For-Purpose-here/$1"; }
 function toc()      { ifp tools-of-curiosity/$1; }
@@ -27,6 +27,10 @@ function toca()     { t4c tools_of_curiosity_app/$1; }
 
 function her()      { heroku "$@"; }
 function py()       { python "$@"; }
+
+###--------------------------------------------
+
+#   Green Crypto Ninjas (needs work)
 
 function pao()      { cd $HOME/PAO/$1; }
 function vpao()     { cd /Volumes/BT-PAO-1TB/PAO/$1; }
@@ -40,21 +44,6 @@ function cnh()      { 3rd_party Chia-network-here/$1; }
 function chiapos()  { cnh chiapos/$1; }
 
 #-----
-function s3api() { Tmp s3api/$1; }
-function dih()   { desk disk-info-here/$1; }
-function dihs()  { dih Code/sql-here/$1; }
-function sqlv()  { sql3 ${1:-v6.db}; }
-
-### Just for debugging: declare -f dih
-function s3down(){ desk m1-s3-jpfs-here/$1; }
-function jpfs()  { s3down just-plain-file-storage/$1; }
-function bt1tb() { s3down BT-1TB-WD/$1; }
-function dfh_timer() { while dfh ${1:-.}; 
-                       do 
-                           ff | wcl; echo ===== $(date +%F-%R); sleep 5; 
-                       done ; }
-
-###--------------------------------------------
 
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
