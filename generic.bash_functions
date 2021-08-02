@@ -81,7 +81,7 @@ function scriptlog(){ script ${1:-$HOME/Tmp/scriptlogs/scriptlog-$(date +%F-%R).
 function scrls()    { screen -ls "$@"; }
 function scrr()     { screen -r "$@"; }
 function sql3()     { sqlite3 "$@"; }
-function sudoo()    { ( set -x; /usr/bin/sudo -H -E "$@"; ) }
+function sudoo()    { ( [[ -n "$SET_MINUS_X" ]] && set -x; /usr/bin/sudo -H -E "$@"; ) }
 function pyclean () {
     # remove all pyc files that are compiled or cached
     find . -type f -name "*.py[co]" -delete
