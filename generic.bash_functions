@@ -7,31 +7,28 @@
 # with no OS-specific or System-specific defintions.
 
 #----------------------------------------------------------
-# This is an experiment
-function ...() {
-    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
-    pwd;
+
+# PATH settings:  Put both $HOME/bin and "." on my PATH, at the end, if not already there.
+# Add varous other things to PATH
+
+function path_has() { fgrep --quiet ":${1}" <<<"$PATH" || fgrep --quiet "${1}:" <<<"$PATH"; }
+function path_set() { 
+    while [[ -n "$1" ]];
+    do
+        path_has "$1" || export PATH="$PATH:$1"
+        shift
+    done
 }
+
+path_set $HOME/bin
+path_set .
 
 #----------------------------------------------------------
-# This is another experiment
-function s3fetch() {
-  local this_bucket="${THIS_BUCKET:-just-plain-file-storage}"
-  local this_key="${1}"
-  local this_log="${2:-s3fetch.log}"
-  [[ "$this_bucket" == "" ]] && \
-       { echo 2>&1 "Need '--bucket'; return 1; }
-  [[ "$this_key" == "" ]] && \
-       { echo 2>&1 "Need '--key'; return 2; }
 
-  echo "$this_key" >> "$this_log" 
-  aws s3api \
-    get-object  \
-    --bucket "$this_bucket" \
-    --key "$this_key"  \
-    "$this_key" >> "$this_log" 2>&1
-   echo "$? : $this_key" > /dev/tty
-}
+# Python-invocation services
+
+function py() { python "$@"; }
+function pyc() { cls; py "$@"; }
 
 #----------------------------------------------------------
 # I use colored prompts to indicate the type of machine this is.
@@ -43,103 +40,16 @@ function s3fetch() {
 #   yellow    ==  Too hard on my eyes
 #   black     ==  restore the default color (black)
 
-###function bt_prompt()     { PS1='\[\e[35m\]'"[${1:+$1}]"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
-function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
-function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
-function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
-function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]' | sed 'd/^[+]/'; }
-function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n ' | sed 'd/^[+]/'; }
+function magenta_prompt()   { PS1="${1}"'\[\e[35m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function green_prompt()     { PS1='\[\e[32m\]'"${1:+[$1]}"'[ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function red_prompt()       { PS1="${1}"'\[\e[31m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function cyan_prompt()      { PS1="${1}"'\[\e[36m\][ $? ][\u][\h]\n[\w]\n\[\e[;30m\]'; }
+function black_prompt()     { PS1="${1}"'[ $? ][\u][\h]\n[\w]\n '; }
 
 # This is my favorite for local use: The foreground of the prompt is white text on a teal background
 function setPS1()  {
     PS1='\[\e[7;36m\]----------\[\e[27;30m\]\n[ $? ][\u][\h]\n[\w]\n'
 }
-#   This is for use with a virtual environment.  It makes the delineator cover the 
-#   whole top line
-function colorPS1(){ PS1="\[\e[7;36m\]$PS1"; }
-
-#----------------------------
-
-# Navigation Function Definitions and things related to my various repos.  
-#
-# This is generic only because each stanza is guarded by a test for whether 
-# the target directory exists or not.
-
-[[ -d "$HOME/DesktopBT"   ]] && function bt_desk(){ cd $HOME/DesktopBT/$1 && pwd; }
-[[ -d "$HOME/DocumentsBT"   ]] && function bt_doc(){ cd $HOME/DocumentsBT/$1 && pwd; }
-[[ -d "$HOME/DesktopBT/00-Bill-TECH" ]] && function bt_tech(){ bt_desk 00-Bill-TECH/$1; }
-[[ -d "$HOME/DesktopBT/00-Money-Mgmt-Here" ]] && function money(){ bt_desk 00-Money-Mgmt-Here/$1; }
-[[ -d "$HOME/Downloads" ]] && function down(){ cd $HOME/Downloads/$1 && pwd; }
-[[ -d "$HOME/Desktop" ]] && function desk(){ cd $HOME/Desktop/$1 && pwd; }
-
-#----------------------------
-
-# Function 'play' - go to the root directory of play projects
-
-[[ -d "$CODE/play" ]] && {
-    export _BT_PLAY_HERE="$CODE/play"
-    function play() { cd "$_BT_PLAY_HERE/$1"; }
-}
-[[ -d "$HOME/DesktopBT/00-Bill-TECH/play/PracticalPythonProjects" ]] && {
-    export _BT_PPP_HERE="$_BT_PLAY_HERE/PracticalPythonProjects/$1"; 
-    function ppp()      { play "PracticalPythonProjects/$1"; }
-    function ppp_act()  { source $_BT_PPP_HERE/venv_ppp/bin/activate; colorPS1; }
-    function ppp_go()   { ppp && ppp_act ; }
-}
-
-[[ -d "$_BT_GIT_REPOS_HERE/www_billtorcaso_org" ]] && {
-    export _BT_WWW_BILLTORCASO_ORG_REPO="$_BT_GIT_REPOS_HERE/www_billtorcaso_org";
-    function btorepo()  { cd $_BT_WWW_BILLTORCASO_ORG_REPO/$1; }
-    function bto()      { btorepo $1; } # This is where things run
-    function btow()     { bto www_billtorcaso_org/$1; }
-    function btoenv()   { btorepo venv_bto_rebuild/$1; }
-    function bto_act()  { source $_BT_WWW_BILLTORCASO_ORG_REPO/venv_www_billtorcaso_org/bin/activate; colorPS1; }
-    function bto_go()   { bto && bto_act && ginc; }
-    # The above functions are standard.  Here are the special-purpose ones.
-    function btp()      { bto BTOPage/$1; }
-    function btpt()     { btp templates/BTOPage/$1; }
-
-    # This is an experiment for use with visett
-    function bt()       { btorepo "$@"; }
-}
-
-####    These are old-think
-
-###[[ -d "$_BT_GIT_REPOS_HERE/bto_rebuild" ]] && {
-###    export _BT_BT_REBUILD_REPO="$_BT_GIT_REPOS_HERE/bto_rebuild";
-###    function btorrepo() { cd $_BT_BT_REBUILD_REPO/$1; }
-###    function btor()     { btorrepo bto_rebuild/$1; } # This is where things run
-###    function btorb()    { btor bto_rebuild/$1; }     # This is where coding happens
-###    function btorenv()  { btorrepo venv_bto_rebuild/$1; }
-###    function btor_act() { source $_BT_BT_REBUILD_REPO/venv_bto_rebuild/bin/activate; colorPS1; }
-###    function btor_go()  { btor && btor_act; }
-###}
-###
-###[[ -d "/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase/bakerydemo"   ]] && { \
-###    export _BT_SSD_HP_600="/Volumes/SSD-HP-P600/billtorcaso_org_bakery_codebase";
-###    function ssdrepo()  { cd $_BT_SSD_HP_600/$1 && pwd; }
-###    function ssd_btb()  { ssdrepo bakerydemo/$1; }  # This is where things happen
-###    function ssdvenv()  { ssdrepo venv_bakerydemo/$1; }
-###    function ssd_act()  { source $_BT_SSD_HP_600/venv_bakerydemo/bin/activate; }
-###}
-###
-###[[ -d "$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase" ]] && {
-###    export _BT_BT_BAKERY_REPO="$_BT_GIT_REPOS_HERE/billtorcaso_org_bakery_codebase";
-###    function btbrepo()  { cd $_BT_BT_BAKERY_REPO/$1; }
-###    function btb()      { btbrepo bakerydemo/$1; }  # This is where things happen
-###    function btbb()     { btb bakerydemo/$1; }  # This is where things happen
-###    function btbenv()   { btbrepo venv_bakerydemo/$1; }
-###    function btb_act()  { source $_BT_BT_BAKERY_REPO/venv_bakerydemo/bin/activate; }
-###}
-###
-###[[ -d "$_BT_GIT_REPOS_HERE/extras/bakerydemo" ]] && {
-###    export _BT_WAG_BAKERYDEMO_REPO="$_BT_GIT_REPOS_HERE/extras/bakerydemo";
-###    function bakerepo() { cd $_BT_WAG_BAKERYDEMO_REPO/$1; }
-###    function bake()     { bakerepo $1; }  # This is where things happen
-###    function bakeenv()  { bakerepo venv_bakerydemo/$1; }
-###    function bake_act()  { source $_BT_WAG_BAKERYDEMO_REPO/../venv_bakerydemo/bin/activate; cd - > /dev/null; }
-###}
-###
 
 #----------------------------------------------------------
 # General Bash services, defined as bash functions
@@ -154,20 +64,13 @@ function fndef()    { declare -f $@; }
 function fneg ()    { declare -F | grep "$@"; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
-function logs()     { tmp logs/$1; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
 function nsl()      { nslookup "$@"; }
-function scriptlog(){ script ${1:-$HOME/Tmp/scriptlogs/scriptlog-$(date +%F-%R).txt}; }
 function scrls()    { screen -ls "$@"; }
 function scrr()     { screen -r "$@"; }
 function sql3()     { sqlite3 "$@"; }
 function sudoo()    { ( set -x; /usr/bin/sudo -H -E "$@"; ) }
-function pyclean () {
-    # remove all pyc files that are compiled or cached
-    find . -type f -name "*.py[co]" -delete
-    find . -type d -name "__pycache__" -delete
-}
 function tf()       { tail -f "$@"; }
 function wcl()      { wc -l "$@"; }
 
@@ -206,15 +109,6 @@ function fall()     { find "${@:-.}" | sort; }
 #   grep for certain targets, within a list of regular files or directories
 function ffeg()     { ff | grep "$@"; }
 function fdeg()     { fd | grep "$@"; }
-function ffpy()     { ff "$@" | grep "[.]py$" ; } #   find python files
-#   find my own CSS files
-function ffcss()    { ffeg '[.]css$' | grep -v -e '^[.]/static/admin' -e '^[.]/static/wagtail'; }
-
-#   These are lazyness - apply 'vi' to selected files
-function viff()     { vi $(ff); }
-function viffeg()   { vi $(ffeg "$@"); }
-function vipy()     { vi $(ffpy); }
-function viginc()   { vi $(ginc | awk '$1 !~ "##" { print $2; }'); }
 
 #----------------------------------------------------------
 
@@ -263,25 +157,6 @@ gbr_obliterate () {
     echo "... If you really mean it, do this ..."
     echo "git push origin --delete '$1' && git branch -d '$1'"
 }
-
-#----------------------------------------------------------
-
-# For a Wagtail-based Django project (only)
-
-function visett()   { ( bt && vi */settings/[a-z]*.py; ) }  #function 'bt' is always my active project.
-function vimod()    { vi ${1:-*}/models.py; }
-function vireq()    { vi requirements.txt requirements/*; }
-# This needs work.
-function vihtml()   { vi "$@" $(ffeg html | grep -v -e [45]0[40] -e search -e welcome_page); }
-function vihome()   { vi "$@" \
-                         ./home/templates/home/home_page.html \
-                         ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
-                         ./www_billtorcaso_org/templates/base.html; 
-                    }
-function vicss()    { vi "$@" \
-                         ./www_billtorcaso_org/static/css/www_billtorcaso_org.css \
-                         ;
-                    }
 
 #----------------------------------------------------------
 
@@ -405,18 +280,6 @@ function aws_bto()      { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_
 function awslin_pull()  { awsscp pull "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
 function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
 
-####----------------------------------------------------------
-###
-####   OBSOLETE:   Generic SCP shortcut functions WITHOUT a key-pair file
-###
-####   The pull operations are "person, servername, thing, destination"
-####   The push operations are "thing, person, servername, destination"
-###
-###function scppull()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}@${2}:${3}" "${4:-.}"; ) }
-###function scppush()  { (set -x;  scp -o PubkeyAuthentication=no  "${1}" "${2}@${3}:${4:-.}"; ) }
-###
-#----------------------------------------------------------
-
 # Navigation within my $HOME directory tree
 
 [[ -d "$HOME/Bin"       ]] && function Bin() { cd $HOME/Bin/$1 && pwd; }
@@ -426,33 +289,22 @@ function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO
                               function tmp() { Tmp "$@"; }
 [[ -d "$HOME/.ssh"      ]] && function _ssh(){ cd $HOME/.ssh/$1 && pwd; }
 
-#----------------------------------------------------------
+# -- These are my play projects ...
 
-#   Vagrant commands (if vagrant is installed locally)
-
-[[ "$(which vagrant> /dev/null 2>&1; echo $?)" == 0 ]] && {
-    function vg()       { vagrant $@; }
-    function vggst()    {  vg global-status "$@" | grep '^[0-9a-fA-F]' | sort -r -k 4,4 -k 5,5r | awk '{ print $1, $4, $5}'; }
-    function vssh()     { ( set -x;  vg ssh "$@"; ) }
-    function upshell()  {  vg up && vssh "$@"; }
-}
-
-#----------------------------------------------------------
-
-# PATH settings:  Put both $HOME/bin and "." on my PATH, at the end, if not already there.
-
-function path_has() { fgrep --quiet ":${1}" <<<"$PATH" || fgrep --quiet "${1}:" <<<"$PATH"; }
-function path_set() { 
-    while [[ -n "$1" ]];
-    do
-        path_has "$1" || export PATH="$PATH:$1"
-        shift
-    done
-}
-
-path_set $HOME/bin
-path_set .
-path_set $HOME/tmp/s3api
+function brew_here() { Code "Brew-here/$1"; }
+function cfpb_here() { Code "CFPB-here/$1"; }
+function divio_here() { Code "Divio-here/$1"; }
+function dj_tutor_here() { Code "Django-Tutorial-here/$1"; }
+function docker_here() { Code "Docker-here/$1"; }
+function ifp_here() { Code "Innovators-For-Purpose-here/$1"; }
+function bee_here() { Code "NYT-Spelling-Bee-here/$1"; }
+function son_of_ninjas_here() { Code "Son-of-Chia-Ninjas-here/$1"; }
+function py_stopwatch_here() { Code "Stopwatch_Python_V2/$1"; }
+function TSD_here() { Code "TwoScoopsOfDjango-3.x/$1"; }
+function chialisp_here() { Code "chialisp-here/$1"; }
+function github_here() { Code "github/$1"; }
+function pegasys_here() { Code "pegasys-detection-tool-here/$1"; }
+function py395_docs_here() { Code "python-3.9.5-docs-html/$1"; }
 
 #----------------------------------------------------------
 

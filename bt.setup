@@ -39,7 +39,7 @@
 
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
-    function fned()     { vi $_BT_BASH_FNED_FILES "$@"; fns ; }
+    function fned()     { cls; vi $_BT_BASH_FNED_FILES "$@"; fns ; }
     function fneg()     { declare -F | grep "$@"; }
     function fns()      {
         for thing in $(echo $_BT_BASH_FNED_FILES | \

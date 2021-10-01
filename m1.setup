@@ -3,8 +3,6 @@
 #   Decide what platform we are on right now ...
 #
  case "$(uname -a)" in 
-     ###*Ubuntu*) export _BT_PLATFORM_NAME="ubuntu";; 
-     ###*amzn2*)  export _BT_PLATFORM_NAME="awslinux";;
      *Darwin*) export _BT_PLATFORM_NAME="darwin";;
      *)
          echo 1>&2 "PANIC: cannot decide what platform this is! Get help."
@@ -13,13 +11,14 @@
  esac
 
 ###--------------------------------------------
+PATH="/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon:$PATH"
 PATH="$PATH:$HOME/bin"
 PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 PATH="$PATH:/opt/homebrew/bin"
 
 ###--------------------------------------------
 
-#   Peter And Others
+#   Innovators For Purpose
 
 function ifp()      { code "Innovators-For-Purpose-here/$1"; }
 function toc()      { ifp tools-of-curiosity/$1; }
@@ -28,24 +27,34 @@ function toca()     { t4c tools_of_curiosity_app/$1; }
 function her()      { heroku "$@"; }
 function py()       { python "$@"; }
 
-function pao()      { cd $HOME/PAO/$1; }
-function vpao()     { cd /Volumes/BT-PAO-1TB/PAO/$1; }
-function paotmp()   { chiah bt_tmp/$1; }
-function chiah()    { pao Chia-here/$1; }
-function 3p()       { pao 3rd-party-here/$1; }
-function fred()     { 3rd_party freddiecoleman-here/$1; }
-function cclient()  { fred chia-client/$1; }
-function cnscan()   { fred chia-network-scanner/$1; }
-function cnh()      { 3rd_party Chia-network-here/$1; }
-function chiapos()  { cnh chiapos/$1; }
+###--------------------------------------------
+
+#   Green Crypto Ninjas
+
+export GCN_ROOT_HERE="/Volumes/Sp1V1/Sp1V1-root/GCN"
+export GCN_REPO_HERE="$GCN_ROOT_HERE/repos-here/gcn-repo"
+function gcn()      { cd "${GCN_REPO_HERE/$1}"; }
+function gcnrepo()  { gcn repos-here/gcn-repo/$1; }
+### Do Not Do This: PATH="$GCN_REPO_HERE:$PATH"
+
+export CHIA_HOME="$HOME/CHIA"
+function chh()      { cd "${CHIA_HOME:-$HOME/CHIA}/$1"; }
+function chb()      { chh bin/$1; }
+function chl()      { chh logs/$1; }
+function chlarch()  { chh logs/archive/$1; }
+function chr()      { chh reservations-here/$1; }
+function chs()      { chh status-here/$1; }
+PATH="$CHIA_HOME/bin:$PATH"
 
 #-----
+
+#   Bill's own stuff
+
 function s3api() { Tmp s3api/$1; }
 function dih()   { desk disk-info-here/$1; }
 function dihs()  { dih Code/sql-here/$1; }
 function sqlv()  { sql3 ${1:-v6.db}; }
 
-### Just for debugging: declare -f dih
 function s3down(){ desk m1-s3-jpfs-here/$1; }
 function jpfs()  { s3down just-plain-file-storage/$1; }
 function bt1tb() { s3down BT-1TB-WD/$1; }
@@ -97,7 +106,7 @@ export _BT_GIT_REPOS_HERE="$CODE/github"
     }
     # 'm1.setup' replaces 'bt.setup' on Darwin/Big Sur
     function m1ed() {
-        fnsrepo; vi ./m1.setup; cd - ; . $HOME/Code/github/bash_functions/m1.setup 
+        fnsrepo; vi ./m1.setup; cd - ; . $HOME/Code/github/bash_functions/m1.setup; fns
     }
 } || \
 {
@@ -119,8 +128,12 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    darwin)     PS1="";
-		function update_terminal_cwd() { echo "[$?]""[$(basename $(dirname $PWD))/$(basename $PWD)]"; };;
+    ###darwin)     PS1="";
+    darwin)     setPS1="";
+		function update_terminal_cwd() {
+            echo "[$?]""[$(basename $(dirname $PWD))/$(basename $PWD)]";
+        }
+        ;;
 esac
 
 true    # That's all, folks!
