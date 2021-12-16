@@ -8,6 +8,10 @@
 
 #----------------------------------------------------------
 
+function desk() { cd $HOME/Desktop/$1; }
+
+#----------------------------------------------------------
+
 # PATH settings:  Put both $HOME/bin and "." on my PATH, at the end, if not already there.
 # Add varous other things to PATH
 
@@ -58,7 +62,8 @@ function blackdot() { black "${@:-.}"; }  # The semi-standard Python reformattin
 function cls()      { clear; }
 function deact()    { deactivate; } # just laziness
 function dfh()      { df -h "${@:-.}"; }
-function dush()     { sudoo du -sh "${@:-.}"; }
+function dush()     { du -sh "${@:-.}"; }
+function sudush()   { sudoo du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
 function fndef()    { declare -f $@; }
 function fneg ()    { declare -F | grep "$@"; }
@@ -131,7 +136,7 @@ function findeg()   { time find . -type f -exec grep "$@" "{}" /dev/null ';' ; }
 
 # Git stuff
 
-# 'gin', 'gco', 'glog', and 'gpo' get 90% of the use.
+# 'ginc', 'gco', 'glog', and 'gpo' get 90% of the use.
 
 function gadd ()    { ( pyclean; git add ${@:-$(gmod)} ) }
 function gbron()    { ginfo | awk '$1 == "*" { print $2; }'; }
@@ -175,11 +180,17 @@ function runserve() {
           "0.0.0.0:${2:-8000}" ; 
 }
 function runserver(){ pyman runserver "$@"; }
+function runs()     { runserver "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
 
 #--------------------------------------
 
 # AWS ssh and scp utility functions
+#    (It is a lot of effort to keep these up to date; I've mostly stopped trying)
+
+function aws_login() { 
+    ssh -i ~/.ssh/keypair-2021-12-05.pem  -l ubuntu  3.134.0.116; 
+}
 
 function awsssh()    {
     # $1 == the target machine
@@ -279,6 +290,8 @@ export _BTO_AWS_LINUX2_HOST="ec2-3-14-194-51.us-east-2.compute.amazonaws.com"
 function aws_bto()      { awsssh $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM ${1:-$_BTO_AWS_LINUX2_USER}; }
 function awslin_pull()  { awsscp pull "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
 function awslin_push()  { awsscp push "$1" "${2:-.}" $_BTO_AWS_LINUX2_HOST $_BTO_AWS_PEM $_BTO_AWS_LINUX2_USER; }
+
+#--------------------------------------
 
 # Navigation within my $HOME directory tree
 

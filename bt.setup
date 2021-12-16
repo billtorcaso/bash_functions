@@ -1,3 +1,6 @@
+function sshbto() {  
+    ssh -i "$HOME/.ssh/key-BTO-2021-12-09-V2.pem" ubuntu@ec2-3-133-238-192.us-east-2.compute.amazonaws.com
+}
 ###--------------------------------------------
 #
 #   Decide what platform we are on right now ...

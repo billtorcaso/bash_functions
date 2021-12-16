@@ -5,7 +5,6 @@
 # This file is specific to DARWIN, aka MacOS
 
 #----------------------------
-#----------------------------
 
 # Non-generic functions that happen to work on this machine.
 
