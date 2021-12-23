@@ -100,7 +100,6 @@ function egff()     { egffnx "$@" | _code_excludes; }
 # 'ginc', 'gco', 'glog', and 'gpo' get 90% of the use.
 
 function gadd ()    { ( pyclean; git add ${@:-$(gmod)} ) }
-function gbron()    { ginfo | awk '$1 == "*" { print $2; }'; }
 
 # 'gsb' is not functional on older versions of GIT
 function gsb()      { git status -s -b "$@"; }
@@ -116,7 +115,7 @@ function glog()     { git log --name-only "$@" | head -n 20; }
 function gmod()     { gsb | awk '$1 == "M" || $1 == "MM" || $1 == "??" { print $2; }'; }
 
 # Be sure you want to 'push origin' before you run this.
-function gpo()      { ( local target="${@:-$(gbron)}"; set -x; git push origin "$target" ) }
+function gpo()      { ( local target="${@:-main}"; set -x; git push origin "$target" ) }
 
 gbr_obliterate () {
     # How to completely annihilate a branch, locally and in the repo.
@@ -237,7 +236,6 @@ function PS1set()  {
 which_md5="$(which md5)"
 which_md5sum="$(which md5sum)"
 
-set -x
 if [[ "$which_md5" != "" ]];
 then
     eval "function md5r() { $which_md5 -r "$@"; } ;"
@@ -248,7 +246,6 @@ else
     # Failure ...
     echo 1>&2 "Function 'md5r' is not defined";
 fi
-set +x
 
 #----------------------------------------------------------
 
