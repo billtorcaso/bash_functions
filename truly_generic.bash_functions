@@ -231,6 +231,27 @@ function PS1set()  {
 
 #----------------------------------------------------------
 
+# 'md5r' is too useful to leave out.
+# So we do a little work to define it ...
+
+which_md5="$(which md5)"
+which_md5sum="$(which md5sum)"
+
+set -x
+if [[ "$which_md5" != "" ]];
+then
+    eval "function md5r() { $which_md5 -r "$@"; } ;"
+elif [[ "$which_md5sum" != "" ]];
+then
+    eval "function md5r() { $which_md5sum \"\$@\"; } ;"
+else
+    # Failure ...
+    echo 1>&2 "Function 'md5r' is not defined";
+fi
+set +x
+
+#----------------------------------------------------------
+
 # PATH settings:  Put both $HOME/bin and "." on my PATH, at the end, if not already there.
 # Adding "." to PATH is deprecated for ROOT, but I am a harmless little rabbit
 # and never do anything wrung.
