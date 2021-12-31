@@ -69,7 +69,7 @@ function dfh_timer() { while dfh ${1:-.};
 
 export CODE="$HOME/Code"
 function code() { cd $CODE/$1; pwd; }
-export _BT_GIT_REPOS_HERE="$CODE/github"
+export _BT_GIT_REPOS_HERE="$CODE/github-here"
 
 
 [[ -d "$_BT_GIT_REPOS_HERE" ]] && \
