@@ -51,14 +51,14 @@ function wcl()      { wc -l "$@"; }
 
 #	These are not POSIX standard and must be guarded by 'which'.
 
-[[ $(which black > /dev/null) ]] && { 
+[[ $(which black) ]] && { 
     # The semi-standard Python reformatting tool.
     function blackdot() { black "${@:-.}"; }  
 }
-[[ $(which sqlite3 > /dev/null) ]] && { 
+[[ $(which sqlite3) ]] && { 
     function sql3()     { sqlite3 "$@"; }
 }
-[[ $(which black > /dev/null) ]] && { 
+[[ $(which screen) ]] && { 
     function scrls()    { screen -ls "$@"; }
     function scrr()     { screen -r "$@"; }
 }
