@@ -11,40 +11,39 @@
  esac
 
 ###--------------------------------------------
-PATH="/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon:$PATH"
+###PATH="/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon:$PATH"
 PATH="$PATH:$HOME/bin"
 PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 PATH="$PATH:/opt/homebrew/bin"
 
-###--------------------------------------------
+######--------------------------------------------
+###
+####   Innovators For Purpose
+###
+###function ifp()      { code "Innovators-For-Purpose-here/$1"; }
+###function toc()      { ifp tools-of-curiosity/$1; }
+###function toca()     { t4c tools_of_curiosity_app/$1; }
+###
+###function her()      { heroku "$@"; }
 
-#   Innovators For Purpose
-
-function ifp()      { code "Innovators-For-Purpose-here/$1"; }
-function toc()      { ifp tools-of-curiosity/$1; }
-function toca()     { t4c tools_of_curiosity_app/$1; }
-
-function her()      { heroku "$@"; }
-function py()       { python "$@"; }
-
-###--------------------------------------------
-
-#   Green Crypto Ninjas
-
-export GCN_ROOT_HERE="/Volumes/Sp1V1/Sp1V1-root/GCN"
-export GCN_REPO_HERE="$GCN_ROOT_HERE/repos-here/gcn-repo"
-function gcn()      { cd "${GCN_REPO_HERE/$1}"; }
-function gcnrepo()  { gcn repos-here/gcn-repo/$1; }
-### Do Not Do This: PATH="$GCN_REPO_HERE:$PATH"
-
-export CHIA_HOME="$HOME/CHIA"
-function chh()      { cd "${CHIA_HOME:-$HOME/CHIA}/$1"; }
-function chb()      { chh bin/$1; }
-function chl()      { chh logs/$1; }
-function chlarch()  { chh logs/archive/$1; }
-function chr()      { chh reservations-here/$1; }
-function chs()      { chh status-here/$1; }
-PATH="$CHIA_HOME/bin:$PATH"
+######--------------------------------------------
+###
+####   Green Crypto Ninjas
+###
+###export GCN_ROOT_HERE="/Volumes/Sp1V1/Sp1V1-root/GCN"
+###export GCN_REPO_HERE="$GCN_ROOT_HERE/repos-here/gcn-repo"
+###function gcn()      { cd "${GCN_REPO_HERE/$1}"; }
+###function gcnrepo()  { gcn repos-here/gcn-repo/$1; }
+###### Do Not Do This: PATH="$GCN_REPO_HERE:$PATH"
+###
+###export CHIA_HOME="$HOME/CHIA"
+###function chh()      { cd "${CHIA_HOME:-$HOME/CHIA}/$1"; }
+###function chb()      { chh bin/$1; }
+###function chl()      { chh logs/$1; }
+###function chlarch()  { chh logs/archive/$1; }
+###function chr()      { chh reservations-here/$1; }
+###function chs()      { chh status-here/$1; }
+###PATH="$CHIA_HOME/bin:$PATH"
 
 #-----
 
@@ -106,7 +105,7 @@ export _BT_GIT_REPOS_HERE="$CODE/github-here"
     }
     # 'm1.setup' replaces 'bt.setup' on Darwin/Big Sur
     function m1ed() {
-        fnsrepo; vi ./m1.setup; cd - ; . $HOME/Code/github/bash_functions/m1.setup; fns
+        vi $HOME/m1.setup; . $HOME/Code/github/bash_functions/m1.setup; fns
     }
 } || \
 {
