@@ -1,14 +1,13 @@
 # Temporary things, before I decide to promote them.
 
 function fns_begin()  {
-    source $HOME/m1.setup  && \
-    source $HOME/truly_generic.bash_functions && \
-    source ${TMP_FNS:-$HOME/bin/function_experiments.sh};
+    fns_refresh && \
+    source $HOME/m1.setup;
 }
 
 function fns_refresh()  {
-    source $HOME/truly_generic.bash_functions && \
-    source ${TMP_FNS:-$HOME/bin/function_experiments.sh};
+    source $HOME/bin/truly_generic.bash_functions && \
+    source $HOME/bin/function_experiments.sh;
 }
 
 function gth()  { Code github-here/"$1"; }
