@@ -1,7 +1,7 @@
 # Temporary things, before I decide to promote them.
 
 export _BT_BTO_KEYPAIR="$HOME/.ssh/key-BTO-2021-12-09-V2.pem"
-export _BT_BTO_PUBLIC_IP=ec2-18-118-47-163.us-east-2.compute.amazonaws.com
+export _BT_BTO_PUBLIC_IP=ec2-3-142-231-109.us-east-2.compute.amazonaws.com
 
 
 function fns_begin()  {
@@ -16,6 +16,7 @@ function fns_refresh()  {
 
 function gth()  { Code github-here/"$1"; }
 function btoh() { gth bto_v2/"$1"; }
+function bto2() { Code bto-2022-01-06-here/bto-2202-01-06/"$1"; }
 
 function ec2sh(){ 
     clear;

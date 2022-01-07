@@ -266,7 +266,7 @@ function awsscp()    {
 # billtorcaso.org on AWS + EC2
 #   This is what we want to achieve( different user and different host):
 #
-#       AWS:    ssh -i "billtorcasoorg.pem" ec2-user@ec2-3-14-194-51.us-east-2.compute.amazonaws.com
+#       AWS:    ssh -i "billtorcasoorg.pem" ec2-user@EC2-3-14-194-51.us-east-2.compute.amazonaws.com
 #       UBUNTU: ssh -i "billtorcasoorg.pem" ubuntu@ec2-3-16-94-59.us-east-2.compute.amazonaws.com
 #
 
