@@ -16,7 +16,7 @@ function fns_refresh()  {
 
 function gth()  { Code github-here/"$1"; }
 function btoh() { gth bto_v2/"$1"; }
-function bto2() { Code bto-2022-01-06-here/bto-2202-01-06/"$1"; }
+function bto2() { Code bto-2022-01-06-here/bto-2022-01-06/"$1"; }
 
 function ec2sh(){ 
     clear;
