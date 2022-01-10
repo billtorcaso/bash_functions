@@ -272,20 +272,16 @@ function path_set() {
 [[ -d "$HOME/bin" ]] && path_set $HOME/bin
 path_set .
 
-
-#----------------------------------------------------------
-
-# My favorite PS1 prompt
-# This is my favorite for local use: The foreground of the prompt is white text on a teal background
-
-###--------------------------------------------
-
-#   Set the Bash prompt based on which platform this is.
-#   Must wait until after the  colored_prompt functions are defined.
-
-case "$_BT_PLATFORM_NAME" in 
-    ubuntu)     cyan_prompt;;
-    awslinux)   magenta_prompt;;
-    *darwin)    PS1set; update_terminal_cwd() { true; };;
-esac
+# DO NOT SET THE PROMPT IN THIS SCRIPT!
+# Bad things can happen when run inside a 'screen' PTY.
+######--------------------------------------------
+###
+####   Set the Bash prompt based on which platform this is.
+####   Must wait until after the  colored_prompt functions are defined.
+###
+###case "$_BT_PLATFORM_NAME" in 
+###    ubuntu)     cyan_prompt;;
+###    awslinux)   magenta_prompt;;
+###    *darwin)    PS1set; update_terminal_cwd() { true; };;
+###esac
 
