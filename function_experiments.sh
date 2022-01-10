@@ -7,7 +7,8 @@
 { echo 1>&2 "Warning: can't find $HOME/.local/bin"; }
 
 export _BT_BTO_KEYPAIR="$HOME/.ssh/key-BTO-2021-12-09-V2.pem"
-export _BT_BTO_PUBLIC_IP=ec2-3-142-231-109.us-east-2.compute.amazonaws.com
+export _BT_BTO_IP_PUBLIC_4DOTS=3.142.231.109
+export _BT_BTO_IP_PUBLIC_NAME=ec2-$(sed 's/[.]/-/g' <<<"$_BT_BTO_IP_PUBLIC_4DOTS").us-east-2.compute.amazonaws.com
 
 
 function fns_begin()  {
@@ -28,7 +29,7 @@ function ec2sh(){
     clear;
     (   cd $HOME/tmp;
         ssh -i ${_BT_BTO_KEYPAIR} \
-            ubuntu@${_BT_BTO_PUBLIC_IP} \
+            ubuntu@${_BT_BTO_IP_PUBLIC_NAME} \
             "${@:--v}";
     )
     pwd
