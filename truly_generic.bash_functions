@@ -40,6 +40,7 @@ function deact()    { deactivate; } # just laziness
 function dfh()      { df -h "${@:-.}"; }
 function dush()     { du -sh "${@:-.}"; }
 function envg()     { env | grep "${@:-.}" | sort; }
+function portkill() { sudo fuser -k "${@:-8000/tcp}"; }
 function h20()      { history | tail -n ${@:-20}; }
 function heg()      { history | grep $@; }
 function ls1()      { ls -1 "$@"; }
