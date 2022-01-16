@@ -25,6 +25,10 @@ function gth()  { Code github-here/"$1"; }
 function btoh() { gth bto_v2/"$1"; }
 function bto2() { Code bto-2022-01-06-here/bto-2022-01-06/billtorcaso_org/"$1"; }
 
+function bto2_act()    { 
+    source $HOME/Code/bto-2022-01-06-here/venv-bto-2022-01-06/bin/activate;
+}
+
 function ec2sh(){ 
     clear;
     (   cd $HOME/tmp;

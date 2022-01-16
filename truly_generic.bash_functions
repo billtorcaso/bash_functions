@@ -45,6 +45,7 @@ function heg()      { history | grep $@; }
 function ls1()      { ls -1 "$@"; }
 function lstr()     { ls -tr1 "$@"; }
 function nsl()      { nslookup "$@"; }
+function psa()      { ps aux | grep "${@:-python}"; }
 function sudoo()    { ( set -x; /usr/bin/sudo -H -E "$@"; ) }
 function tf()       { tail -f "$@"; }
 function wcl()      { wc -l "$@"; }
@@ -245,10 +246,10 @@ which_md5sum="$(which md5sum)"
 
 if [[ "$which_md5" != "" ]];
 then
-    eval "function md5r() { $which_md5 -r "$@"; } ;"
+    eval "function md5r() { $which_md5 -r "$@" | sort; } ;"
 elif [[ "$which_md5sum" != "" ]];
 then
-    eval "function md5r() { $which_md5sum \"\$@\"; } ;"
+    eval "function md5r() { $which_md5sum \"\$@\" | sort; } ;"
 else
     # Failure ...
     echo 1>&2 "Function 'md5r' is not defined";
