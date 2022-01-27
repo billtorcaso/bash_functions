@@ -137,9 +137,8 @@ gbr_obliterate () {
 
 # Django stuff
 
-function mm()       { pymanc makemigrations "${@:--v 3}"; }
-function mmm()      { mm && pyman migrate "${@:--v 3}" ; }
-function mmmr()     { mmm && runserve "$@"; }
+function pmkm()     { pymanc makemigrations "$@"; }
+function pmig()     { pyman migrate "$@"; }
 function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
 function run8000()  { cls; runserve ${1-dev} 8000; }

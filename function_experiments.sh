@@ -43,6 +43,12 @@ ec2curl()   {
     curl ec2-3-133-238-192.us-east-2.compute.amazonaws.com:${1:-8000};
 }
 
+# for the wag tutorial that has a photogallery
+function wagtut() { Code wagtutorial-2022-01-27-here/"$1"; }
+function wagtut_act() { 
+    source ~/Code/wagtutorial-2022-01-27-here/venv_wag_tutorial/bin/activate;
+}
+
 # "Homebrew" is Macos only
 function ngetc()    { cd /opt/homebrew/etc/nginx/"$1"; }
 function nglog()    { cd /opt/homebrew/var/log/nginx/"$1"; }
