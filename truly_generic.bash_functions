@@ -141,15 +141,16 @@ function pmkm()     { pymanc makemigrations "$@"; }
 function pmig()     { pyman migrate "$@"; }
 function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
-function run8000()  { cls; runserve ${1-dev} 8000; }
-function run9000()  { cls; runserve ${1-dev} 9000; }
-function runserver(){ pyman runserver "$@"; }
+function run8000()  { runserve ${1-dev} 8000; }
+function run9000()  { runserve ${1-dev} 9000; }
+function runserver(){ clear; pyman runserver "$@"; }
 function runserve() { 
+    clear;
     pyman runserver \
           --settings="$(basename $(pwd)).settings.${1:-dev}" \
           "0.0.0.0:${2:-8000}" ; 
 }
-function runs()     { runserver "$@"; }
+function runs()     { runserve "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
 
 #--------------------------------------
@@ -244,15 +245,15 @@ function PS1set()  {
 which_md5="$(which md5)"
 which_md5sum="$(which md5sum)"
 
-if [[ "$which_md5" != "" ]];
+if [[ "$which_md5" != "x" ]];
 then
-    eval "function md5r() { $which_md5 -r "$@" | sort; } ;"
-elif [[ "$which_md5sum" != "" ]];
+    eval "function md5r() { ( set -x; $which_md5 -r \"\$@\" | sort; ) } ;"
+elif [[ "$which_md5sum" != "x" ]];
 then
     eval "function md5r() { $which_md5sum \"\$@\" | sort; } ;"
 else
     # Failure ...
-    echo 1>&2 "Function 'md5r' is not defined";
+    echo 1>&2 "Unable to define Function 'md5r'";
 fi
 
 #----------------------------------------------------------
