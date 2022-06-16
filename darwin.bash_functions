@@ -19,10 +19,17 @@
 
 #----------------------------------------------------------
 # This is an experiment
-function ...() {
-    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
-    pwd;
-}
+export TAX2021="$HOME/Desktop/2021-Tax-Prep-here";
+function tax21() { cd $TAX2021/"$1"; }
+function mvtax21()  { mv "$@" $TAX2021; }
+
+
+####----------------------------------------------------------
+#### This is an experiment
+###function ...() {
+###    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
+###    pwd;
+###}
 
 #----------------------------------------------------------
 # This is another experiment

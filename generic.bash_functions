@@ -94,15 +94,14 @@ function _code_excludes() {
             -e ^Binary \
             -e '/venv_' \
             -e '/[.]git/' \
-            -e '^[.]/media/' \
-            -e '/img/' \
             ;
 }
 
 function _drop_first_two_chars()    { sed 's/^..//' $@; }
 
 #   find regular files
-function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _code_excludes | sort; }
+function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _code_excludes ; }
+function ffsort() { ff "$@" | sort; }
 function ffs3path() { ff "$@" | _drop_first_two_chars; }
 
 #   find directories
@@ -110,6 +109,7 @@ function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _code
 
 #   find all, regardless of type
 function fall()     { find "${@:-.}" | sort; }
+function fallsort() { fall "$@" | sort; }
 
 #   grep for certain targets, within a list of regular files or directories
 function ffeg()     { ff | grep "$@"; }

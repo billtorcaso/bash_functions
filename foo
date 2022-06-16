@@ -1,0 +1,110 @@
+diff --git a/bt.setup b/bt.setup
+index 5038bd6..a972011 100644
+--- a/bt.setup
++++ b/bt.setup
+@@ -1,3 +1,7 @@
++# for use with Synology NAS DS1621xs+
++function sp1r() { cd /Volumes/Sp1V1/Sp1V1-root/"$@"; }
++function spimg()    { sp1r 00-Bill-2022-05-05/00-2nd-try-Absolutely-All-Images/"$@"; }
++
+ function sshbto() {  
+     ssh -i "$HOME/.ssh/key-BTO-2021-12-09-V2.pem" ubuntu@ec2-3-133-238-192.us-east-2.compute.amazonaws.com
+ }
+@@ -20,9 +24,9 @@ function sshbto() {
+ 
+ #   This is fundamental to all other "_BT_GIT_*" env variables.
+ 
+-[[ -d "$HOME/Code/github" ]] && \
++[[ -d "$HOME/Code/github-here" ]] && \
+ {
+-    export _BT_GIT_REPOS_HERE="$HOME/Code/github"
++    export _BT_GIT_REPOS_HERE="$HOME/Code/github-here"
+     function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
+ } || \
+ {
+@@ -42,6 +46,7 @@ function sshbto() {
+ 
+     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
+     function fndef()    { declare -f "$@"; }
++    function fndefs() {  for i in "$@"; do fndef "$i"; done; }
+     function fned()     { cls; vi $_BT_BASH_FNED_FILES "$@"; fns ; }
+     function fneg()     { declare -F | grep "$@"; }
+     function fns()      {
+diff --git a/darwin.bash_functions b/darwin.bash_functions
+index 77e660f..72da7a8 100644
+--- a/darwin.bash_functions
++++ b/darwin.bash_functions
+@@ -19,10 +19,17 @@
+ 
+ #----------------------------------------------------------
+ # This is an experiment
+-function ...() {
+-    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
+-    pwd;
+-}
++export TAX2021="$HOME/Desktop/2021-Tax-Prep-here";
++function tax21() { cd $TAX2021/"$1"; }
++function mvtax21()  { mv "$@" $TAX2021; }
++
++
++####----------------------------------------------------------
++#### This is an experiment
++###function ...() {
++###    cd $(find "${2:-$HOME}" -type d -name "${1}" 2>/dev/null);
++###    pwd;
++###}
+ 
+ #----------------------------------------------------------
+ # This is another experiment
+diff --git a/generic.bash_functions b/generic.bash_functions
+index d3c327f..d1699ba 100644
+--- a/generic.bash_functions
++++ b/generic.bash_functions
+@@ -94,15 +94,14 @@ function _code_excludes() {
+             -e ^Binary \
+             -e '/venv_' \
+             -e '/[.]git/' \
+-            -e '^[.]/media/' \
+-            -e '/img/' \
+             ;
+ }
+ 
+ function _drop_first_two_chars()    { sed 's/^..//' $@; }
+ 
+ #   find regular files
+-function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _code_excludes | sort; }
++function ff() { local WHERE="${1:-.}"; shift; find "$WHERE" -type f "$@" | _code_excludes ; }
++function ffsort() { ff "$@" | sort; }
+ function ffs3path() { ff "$@" | _drop_first_two_chars; }
+ 
+ #   find directories
+@@ -110,6 +109,7 @@ function fd() { local WHERE="${1:-.}"; shift; find "$WHERE" -type d "$@" | _code
+ 
+ #   find all, regardless of type
+ function fall()     { find "${@:-.}" | sort; }
++function fallsort() { fall "$@" | sort; }
+ 
+ #   grep for certain targets, within a list of regular files or directories
+ function ffeg()     { ff | grep "$@"; }
+diff --git a/truly_generic.bash_functions b/truly_generic.bash_functions
+index 8f17bc0..e8e5957 100644
+--- a/truly_generic.bash_functions
++++ b/truly_generic.bash_functions
+@@ -141,8 +141,6 @@ function pmkm()     { pymanc makemigrations "$@"; }
+ function pmig()     { pyman migrate "$@"; }
+ function pyman()    { ( set -x; python ./manage.py "$@"; ) }
+ function pymanc()   { clear; pyman "$@"; }
+-function run8000()  { runserve ${1-dev} 8000; }
+-function run9000()  { runserve ${1-dev} 9000; }
+ function runserver(){ clear; pyman runserver "$@"; }
+ function runserve() { 
+     clear;
+@@ -152,6 +150,8 @@ function runserve() {
+ }
+ function runs()     { runserve "$@"; }
+ function shp()      { pyman shell_plus --ipython "$@"; }
++function run8000()  { runserve ${1-dev} 8000; }
++function run9000()  { runserve ${1-dev} 9000; }
+ 
+ #--------------------------------------
+ 

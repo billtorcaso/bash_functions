@@ -1,3 +1,7 @@
+# for use with Synology NAS DS1621xs+
+function sp1r() { cd /Volumes/Sp1V1/Sp1V1-root/"$@"; }
+function spimg()    { sp1r 00-Bill-2022-05-05/00-2nd-try-Absolutely-All-Images/"$@"; }
+
 function sshbto() {  
     ssh -i "$HOME/.ssh/key-BTO-2021-12-09-V2.pem" ubuntu@ec2-3-133-238-192.us-east-2.compute.amazonaws.com
 }
@@ -20,9 +24,9 @@ function sshbto() {
 
 #   This is fundamental to all other "_BT_GIT_*" env variables.
 
-[[ -d "$HOME/Code/github" ]] && \
+[[ -d "$HOME/Code/github-here" ]] && \
 {
-    export _BT_GIT_REPOS_HERE="$HOME/Code/github"
+    export _BT_GIT_REPOS_HERE="$HOME/Code/github-here"
     function repos()    { cd $_BT_GIT_REPOS_HERE/$1; }
 } || \
 {
@@ -42,6 +46,7 @@ function sshbto() {
 
     function fnsrepo()  { cd $_BT_BASH_REPO/$1; }
     function fndef()    { declare -f "$@"; }
+    function fndefs() {  for i in "$@"; do fndef "$i"; done; }
     function fned()     { cls; vi $_BT_BASH_FNED_FILES "$@"; fns ; }
     function fneg()     { declare -F | grep "$@"; }
     function fns()      {

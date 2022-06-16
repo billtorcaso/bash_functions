@@ -141,8 +141,6 @@ function pmkm()     { pymanc makemigrations "$@"; }
 function pmig()     { pyman migrate "$@"; }
 function pyman()    { ( set -x; python ./manage.py "$@"; ) }
 function pymanc()   { clear; pyman "$@"; }
-function run8000()  { runserve ${1-dev} 8000; }
-function run9000()  { runserve ${1-dev} 9000; }
 function runserver(){ clear; pyman runserver "$@"; }
 function runserve() { 
     clear;
@@ -152,6 +150,8 @@ function runserve() {
 }
 function runs()     { runserve "$@"; }
 function shp()      { pyman shell_plus --ipython "$@"; }
+function run8000()  { runserve ${1-dev} 8000; }
+function run9000()  { runserve ${1-dev} 9000; }
 
 #--------------------------------------
 
