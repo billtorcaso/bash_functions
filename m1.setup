@@ -130,7 +130,7 @@ case "$_BT_PLATFORM_NAME" in
     ###darwin)     PS1="";
     darwin)     setPS1="";
 		function update_terminal_cwd() {
-            echo "[$?]""[$(basename $(dirname $PWD))/$(basename $PWD)]";
+            echo "[$?]""[$(basename "$(dirname "$PWD")")/$(basename "$PWD")]";
         }
         ;;
 esac

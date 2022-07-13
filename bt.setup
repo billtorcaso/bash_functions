@@ -78,7 +78,8 @@ fns;
 case "$_BT_PLATFORM_NAME" in 
     ubuntu)     magenta_prompt;;
     awslinux)   cyan_prompt;;
-    *darwin)     setPS1; update_terminal_cwd() { true; };;
+    ###*darwin)     setPS1; update_terminal_cwd() { true; };;
+    *darwin)     setPS1;;
 esac
 
 set +x
